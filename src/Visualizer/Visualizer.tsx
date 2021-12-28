@@ -2,12 +2,26 @@ import { useState } from "react";
 import SingleNode from "./SingleNode/SingleNode";
 import "./Visualizer.css";
 
+const START_NODE_ROW = 10;
+const START_NODE_COL = 15;
+const FINISH_NODE_ROW = 10;
+const FINISH_NODE_COL = 35;
+
+const createNode = (col: number, row: number) => {
+  return {
+    col,
+    row,
+    isStart: row === START_NODE_ROW && col === START_NODE_COL,
+    isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
+  };
+};
+
 const getInitialGrid = () => {
   const theGrid = [];
   for (let row = 0; row < 20; row++) {
     const currentRow = [];
     for (let col = 0; col < 50; col++) {
-      currentRow.push([]);
+      currentRow.push(createNode(col, row));
     }
     theGrid.push(currentRow);
   }
@@ -27,7 +41,16 @@ const Visualizer: React.FC = () => {
         return (
           <div key={rowIdx}>
             {row.map((node, nodeIdx) => {
-              return <SingleNode key={nodeIdx}></SingleNode>;
+              const { row, col, isStart, isFinish } = node;
+              return (
+                <SingleNode
+                  key={nodeIdx}
+                  col={col}
+                  row={row}
+                  isStart={isStart}
+                  isFinish={isFinish}
+                ></SingleNode>
+              );
             })}
           </div>
         );
