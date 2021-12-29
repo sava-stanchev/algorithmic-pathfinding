@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { dijkstra, getNodesInShortestPathOrder } from "../Algorithms/Dijkstra";
 import SingleNode from "./SingleNode/SingleNode";
 import "./Visualizer.css";
 
@@ -48,27 +49,69 @@ const Visualizer: React.FC = () => {
     return initialState;
   });
 
+  const animateDijkstra = (
+    visitedNodesInOrder: NodeType[],
+    nodesInShortestPathOrder: NodeType[]
+  ) => {
+    for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+      if (i === visitedNodesInOrder.length) {
+        setTimeout(() => {
+          animateShortestPath(nodesInShortestPathOrder);
+        }, 10 * i);
+        return;
+      }
+      setTimeout(() => {
+        const node = visitedNodesInOrder[i];
+        document.getElementById(`node-${node.row}-${node.col}`)!.className =
+          "node node-visited";
+      }, 10 * i);
+    }
+  };
+
+  const animateShortestPath = (nodesInShortestPathOrder: NodeType[]) => {
+    for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
+      setTimeout(() => {
+        const node = nodesInShortestPathOrder[i];
+        document.getElementById(`node-${node.row}-${node.col}`)!.className =
+          "node node-shortest-path";
+      }, 50 * i);
+    }
+  };
+
+  const visualizeDijkstra = () => {
+    const startNode = grid[START_NODE_ROW][START_NODE_COL];
+    const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+    const visitedNodesInOrder = dijkstra(grid, startNode, finishNode)!;
+    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+    animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+  };
+
   return (
-    <div className="grid">
-      {grid.map((row, rowIdx) => {
-        return (
-          <div key={rowIdx}>
-            {row.map((node, nodeIdx) => {
-              const { row, col, isStart, isFinish } = node;
-              return (
-                <SingleNode
-                  key={nodeIdx}
-                  col={col}
-                  row={row}
-                  isStart={isStart}
-                  isFinish={isFinish}
-                ></SingleNode>
-              );
-            })}
-          </div>
-        );
-      })}
-    </div>
+    <>
+      <button onClick={() => visualizeDijkstra()}>
+        Visualize Dijkstra's Algorithm
+      </button>
+      <div className="grid">
+        {grid.map((row, rowIdx) => {
+          return (
+            <div key={rowIdx}>
+              {row.map((node, nodeIdx) => {
+                const { row, col, isStart, isFinish } = node;
+                return (
+                  <SingleNode
+                    key={nodeIdx}
+                    col={col}
+                    row={row}
+                    isStart={isStart}
+                    isFinish={isFinish}
+                  ></SingleNode>
+                );
+              })}
+            </div>
+          );
+        })}
+      </div>
+    </>
   );
 };
 

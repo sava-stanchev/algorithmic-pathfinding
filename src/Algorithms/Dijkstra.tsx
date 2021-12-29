@@ -52,4 +52,14 @@ const dijkstra = (
   }
 };
 
-export { dijkstra };
+const getNodesInShortestPathOrder = (finishNode: NodeType | null) => {
+  const nodesInShortestPathOrder = [];
+  let currentNode = finishNode;
+  while (currentNode !== null) {
+    nodesInShortestPathOrder.unshift(currentNode);
+    currentNode = currentNode.previousNode;
+  }
+  return nodesInShortestPathOrder;
+};
+
+export { dijkstra, getNodesInShortestPathOrder };
