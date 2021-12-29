@@ -13,7 +13,20 @@ const createNode = (col: number, row: number) => {
     row,
     isStart: row === START_NODE_ROW && col === START_NODE_COL,
     isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
+    distance: Infinity,
+    isVisited: false,
+    previousNode: null,
   };
+};
+
+export type NodeType = {
+  row: number;
+  col: number;
+  isStart: boolean;
+  isFinish: boolean;
+  distance: number;
+  isVisited: boolean;
+  previousNode: NodeType | null;
 };
 
 const getInitialGrid = () => {
