@@ -44,6 +44,8 @@ const dijkstra = (
     sortNodesByDistance(unvisitedNodes);
     const closestNode = unvisitedNodes.shift();
     if (closestNode) {
+      if (closestNode.isWall) continue;
+      if (closestNode.distance === Infinity) return visitedNodesInOrder;
       closestNode.isVisited = true;
       visitedNodesInOrder.push(closestNode);
       if (closestNode === finishNode) return visitedNodesInOrder;

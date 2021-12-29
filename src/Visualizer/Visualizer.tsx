@@ -17,6 +17,7 @@ const createNode = (col: number, row: number) => {
     distance: Infinity,
     isVisited: false,
     previousNode: null,
+    isWall: false,
   };
 };
 
@@ -28,6 +29,7 @@ export type NodeType = {
   distance: number;
   isVisited: boolean;
   previousNode: NodeType | null;
+  isWall: boolean;
 };
 
 const getInitialGrid = () => {
@@ -43,11 +45,43 @@ const getInitialGrid = () => {
   return theGrid;
 };
 
+const getNewGridWithWallToggled = (
+  grid: NodeType[][],
+  row: number,
+  col: number
+) => {
+  const newGrid = grid.slice();
+  const node = newGrid[row][col];
+  const newNode = {
+    ...node,
+    isWall: !node.isWall,
+  };
+  newGrid[row][col] = newNode;
+  return newGrid;
+};
+
 const Visualizer: React.FC = () => {
-  const [grid, setGrid] = useState(() => {
+  const [grid, setGrid] = useState<NodeType[][]>(() => {
     const initialState = getInitialGrid();
     return initialState;
   });
+  const [mouseIsPressed, setMouseIsPressed] = useState(false);
+
+  const handleMouseDown = (row: number, col: number) => {
+    const newGrid = getNewGridWithWallToggled(grid, row, col);
+    setGrid(newGrid);
+    setMouseIsPressed(true);
+  };
+
+  const handleMouseEnter = (row: number, col: number) => {
+    if (!mouseIsPressed) return;
+    const newGrid = getNewGridWithWallToggled(grid, row, col);
+    setGrid(newGrid);
+  };
+
+  const handleMouseUp = () => {
+    setMouseIsPressed(false);
+  };
 
   const animateDijkstra = (
     visitedNodesInOrder: NodeType[],
@@ -96,7 +130,7 @@ const Visualizer: React.FC = () => {
           return (
             <div key={rowIdx}>
               {row.map((node, nodeIdx) => {
-                const { row, col, isStart, isFinish } = node;
+                const { row, col, isStart, isFinish, isWall } = node;
                 return (
                   <SingleNode
                     key={nodeIdx}
@@ -104,6 +138,14 @@ const Visualizer: React.FC = () => {
                     row={row}
                     isStart={isStart}
                     isFinish={isFinish}
+                    isWall={isWall}
+                    onMouseDown={(row: number, col: number) =>
+                      handleMouseDown(row, col)
+                    }
+                    onMouseEnter={(row: number, col: number) =>
+                      handleMouseEnter(row, col)
+                    }
+                    onMouseUp={() => handleMouseUp()}
                   ></SingleNode>
                 );
               })}
