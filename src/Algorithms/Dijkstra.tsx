@@ -1,9 +1,9 @@
-import { NodeType } from "../Visualizer/Visualizer";
+import { NodeType } from "../Visualizer/SingleNode/SingleNode";
 
 const getAllNodes = (grid: NodeType[][]) => {
   const nodes = [];
-  for (const row of grid) {
-    for (const node of row) {
+  for (const col of grid) {
+    for (const node of col) {
       nodes.push(node);
     }
   }
@@ -17,10 +17,10 @@ const sortNodesByDistance = (unvisitedNodes: NodeType[]) => {
 const getUnvisitedNeighbors = (node: NodeType, grid: NodeType[][]) => {
   const neighbors = [];
   const { col, row } = node;
-  if (row > 0) neighbors.push(grid[row - 1][col]);
-  if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
-  if (col > 0) neighbors.push(grid[row][col - 1]);
-  if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
+  if (col > 0) neighbors.push(grid[col - 1][row]);
+  if (col < grid.length - 1) neighbors.push(grid[col + 1][row]);
+  if (row > 0) neighbors.push(grid[col][row - 1]);
+  if (row < grid[0].length - 1) neighbors.push(grid[col][row + 1]);
   return neighbors.filter((neighbor) => !neighbor.isVisited);
 };
 

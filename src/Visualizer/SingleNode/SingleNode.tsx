@@ -1,13 +1,24 @@
 import "./SingleNode.css";
 
+export type NodeType = {
+  row: number;
+  col: number;
+  isStart: boolean;
+  isFinish: boolean;
+  distance: number;
+  isVisited: boolean;
+  previousNode: NodeType | null;
+  isWall: boolean;
+};
+
 type Props = {
   row: number;
   col: number;
   isStart: boolean;
   isFinish: boolean;
   isWall: boolean;
-  onMouseDown: (row: number, col: number) => void;
-  onMouseEnter: (row: number, col: number) => void;
+  onMouseDown: (col: number, row: number) => void;
+  onMouseEnter: (col: number, row: number) => void;
   onMouseUp: () => void;
 };
 
@@ -31,10 +42,10 @@ const SingleNode: React.FC<Props> = ({
 
   return (
     <div
-      id={`node-${row}-${col}`}
+      id={`node-${col}-${row}`}
       className={`node ${extraClassName}`}
-      onMouseDown={() => onMouseDown(row, col)}
-      onMouseEnter={() => onMouseEnter(row, col)}
+      onMouseDown={() => onMouseDown(col, row)}
+      onMouseEnter={() => onMouseEnter(col, row)}
       onMouseUp={() => onMouseUp()}
     ></div>
   );
