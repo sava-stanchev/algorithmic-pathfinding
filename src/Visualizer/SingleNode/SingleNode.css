@@ -4,12 +4,16 @@
   outline: 1px solid rgb(175, 216, 248);
 }
 
-.node-finish {
-  background-color: red;
+.node-start {
+  background-image: url("../../Icons/start.svg");
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
-.node-start {
-  background-color: green;
+.node-finish {
+  background-image: url("../../Icons/target.svg");
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .node-visited {

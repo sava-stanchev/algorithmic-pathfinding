@@ -2,6 +2,8 @@ import { useState } from "react";
 import { dijkstra, getNodesInShortestPathOrder } from "../Algorithms/Dijkstra";
 import SingleNode from "./SingleNode/SingleNode";
 import { NodeType } from "./SingleNode/SingleNode";
+import { ReactComponent as StartIcon } from "../Icons/start.svg";
+import { ReactComponent as TargetIcon } from "../Icons/target.svg";
 import "./Visualizer.css";
 
 const START_NODE_COL = 10;
@@ -133,10 +135,20 @@ const Visualizer: React.FC = () => {
   return (
     <div className="container">
       <div className="buttons-container">
-        <button onClick={() => visualizeDijkstra()}>
+        <div className="start-icon">
+          <StartIcon />
+        </div>
+        <div className="explain-icons">Start Node &nbsp;</div>
+        <div className="start-icon">
+          <TargetIcon />
+        </div>
+        <div className="explain-icons">Target Node</div>
+        <button className="visualize-btn" onClick={() => visualizeDijkstra()}>
           Visualize Dijkstra's Algorithm
         </button>
-        <button onClick={() => resetGrid()}>Reset</button>
+        <button className="reset-btn" onClick={() => resetGrid()}>
+          Reset
+        </button>
       </div>
       <div className="grid">
         {grid.map((col, colIdx) => {

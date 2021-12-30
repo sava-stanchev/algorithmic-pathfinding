@@ -14,8 +14,54 @@ body {
   display: flex;
 }
 
+.start-icon {
+  background-color: white;
+  font-size: medium;
+  padding: 14px 0;
+  border: none;
+}
+
+.explain-icons {
+  background-color: white;
+  font-size: large;
+  color: black;
+  padding: 14px 8px;
+  border: none;
+  border-radius: 5px;
+}
+
+.visualize-btn {
+  background-color: #48c9b0;
+  font-size: medium;
+  color: white;
+  padding: 14px 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.visualize-btn:hover {
+  background-color: #31bea2;
+}
+
+.reset-btn {
+  background-color: #34495e;
+  font-size: medium;
+  color: white;
+  padding: 14px 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.reset-btn:hover {
+  background-color: #34495ebe;
+}
+
 .grid {
   display: flex;
-  margin: 50px;
+  margin: 30px;
   max-width: 100%;
 }
