@@ -10,6 +10,10 @@ body {
   width: 100%;
 }
 
+.buttons-container {
+  display: flex;
+}
+
 .grid {
   display: flex;
   margin: 50px;

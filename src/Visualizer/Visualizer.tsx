@@ -57,6 +57,24 @@ const Visualizer: React.FC = () => {
   });
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
 
+  const resetGrid = () => {
+    const visitedNodes = Array.from(
+      document.getElementsByClassName("node node-visited")
+    );
+    const shortestPathNodes = Array.from(
+      document.getElementsByClassName("node node-shortest-path")
+    );
+    const wallNodes = Array.from(
+      document.getElementsByClassName("node node-wall")
+    );
+
+    visitedNodes
+      .concat(shortestPathNodes, wallNodes)
+      .forEach((node) => (node.className = "node"));
+
+    setGrid(getInitialGrid());
+  };
+
   const handleMouseDown = (col: number, row: number) => {
     const newGrid = getNewGridWithWallToggled(grid, col, row);
     setGrid(newGrid);
@@ -77,7 +95,7 @@ const Visualizer: React.FC = () => {
     visitedNodesInOrder: NodeType[],
     nodesInShortestPathOrder: NodeType[]
   ) => {
-    for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+    for (let i = 1; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
           animateShortestPath(nodesInShortestPathOrder);
@@ -85,15 +103,17 @@ const Visualizer: React.FC = () => {
         return;
       }
       setTimeout(() => {
-        const node = visitedNodesInOrder[i];
-        document.getElementById(`node-${node.col}-${node.row}`)!.className =
-          "node node-visited";
+        if (i !== visitedNodesInOrder.length - 1) {
+          const node = visitedNodesInOrder[i];
+          document.getElementById(`node-${node.col}-${node.row}`)!.className =
+            "node node-visited";
+        }
       }, 10 * i);
     }
   };
 
   const animateShortestPath = (nodesInShortestPathOrder: NodeType[]) => {
-    for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
+    for (let i = 1; i < nodesInShortestPathOrder.length - 1; i++) {
       setTimeout(() => {
         const node = nodesInShortestPathOrder[i];
         document.getElementById(`node-${node.col}-${node.row}`)!.className =
@@ -112,9 +132,12 @@ const Visualizer: React.FC = () => {
 
   return (
     <div className="container">
-      <button onClick={() => visualizeDijkstra()}>
-        Visualize Dijkstra's Algorithm
-      </button>
+      <div className="buttons-container">
+        <button onClick={() => visualizeDijkstra()}>
+          Visualize Dijkstra's Algorithm
+        </button>
+        <button onClick={() => resetGrid()}>Reset</button>
+      </div>
       <div className="grid">
         {grid.map((col, colIdx) => {
           return (
