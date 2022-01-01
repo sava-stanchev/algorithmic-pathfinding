@@ -19,7 +19,8 @@ type Props = {
   isWall: boolean;
   onMouseDown: (col: number, row: number) => void;
   onMouseEnter: (col: number, row: number) => void;
-  onMouseUp: () => void;
+  onMouseLeave: (col: number, row: number) => void;
+  onMouseUp: (col: number, row: number) => void;
 };
 
 const SingleNode: React.FC<Props> = ({
@@ -30,6 +31,7 @@ const SingleNode: React.FC<Props> = ({
   isWall,
   onMouseDown,
   onMouseEnter,
+  onMouseLeave,
   onMouseUp,
 }) => {
   const extraClassName = isFinish
@@ -46,7 +48,8 @@ const SingleNode: React.FC<Props> = ({
       className={`node ${extraClassName}`}
       onMouseDown={() => onMouseDown(col, row)}
       onMouseEnter={() => onMouseEnter(col, row)}
-      onMouseUp={() => onMouseUp()}
+      onMouseLeave={() => onMouseLeave(col, row)}
+      onMouseUp={() => onMouseUp(col, row)}
     ></div>
   );
 };

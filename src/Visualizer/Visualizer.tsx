@@ -6,37 +6,6 @@ import { ReactComponent as StartIcon } from "../Icons/start.svg";
 import { ReactComponent as TargetIcon } from "../Icons/target.svg";
 import "./Visualizer.css";
 
-const START_NODE_COL = 10;
-const START_NODE_ROW = 10;
-const FINISH_NODE_COL = 29;
-const FINISH_NODE_ROW = 10;
-
-const createNode = (row: number, col: number) => {
-  return {
-    row,
-    col,
-    isStart: col === START_NODE_COL && row === START_NODE_ROW,
-    isFinish: col === FINISH_NODE_COL && row === FINISH_NODE_ROW,
-    distance: Infinity,
-    isVisited: false,
-    previousNode: null,
-    isWall: false,
-  };
-};
-
-const getInitialGrid = () => {
-  const theGrid = [];
-  for (let col = 0; col < 40; col++) {
-    const currentCol = [];
-    for (let row = 0; row < 21; row++) {
-      currentCol.push(createNode(row, col));
-    }
-    theGrid.push(currentCol);
-  }
-
-  return theGrid;
-};
-
 const getNewGridWithWallToggled = (
   grid: NodeType[][],
   col: number,
@@ -52,12 +21,66 @@ const getNewGridWithWallToggled = (
   return newGrid;
 };
 
+const getGridWithNewStart = (grid: NodeType[][], col: number, row: number) => {
+  const newGrid = grid.slice();
+  const node = newGrid[col][row];
+  const newNode = {
+    ...node,
+    isStart: !node.isStart,
+  };
+  newGrid[col][row] = newNode;
+  return newGrid;
+};
+
+const getGridWithNewFinish = (grid: NodeType[][], col: number, row: number) => {
+  const newGrid = grid.slice();
+  const node = newGrid[col][row];
+  const newNode = {
+    ...node,
+    isFinish: !node.isFinish,
+  };
+  newGrid[col][row] = newNode;
+  return newGrid;
+};
+
 const Visualizer: React.FC = () => {
+  const [startNodeCol, setStartNodeCol] = useState(10);
+  const [startNodeRow, setStartNodeRow] = useState(10);
+  const [finishNodeCol, setFinishNodeCol] = useState(29);
+  const [finishNodeRow, setFinishNodeRow] = useState(10);
+  const [mouseIsPressed, setMouseIsPressed] = useState(false);
+  const [pressedNodeStatus, setPressedNodeStatus] = useState("");
+
+  const createNode = (row: number, col: number) => {
+    return {
+      row,
+      col,
+      isStart: col === startNodeCol && row === startNodeRow,
+      isFinish: col === finishNodeCol && row === finishNodeRow,
+      distance: Infinity,
+      isVisited: false,
+      previousNode: null,
+      isWall: false,
+    };
+  };
+
+  const getInitialGrid = () => {
+    const theGrid = [];
+    for (let col = 0; col < 40; col++) {
+      const currentCol = [];
+      for (let row = 0; row < 21; row++) {
+        currentCol.push(createNode(row, col));
+      }
+      theGrid.push(currentCol);
+    }
+
+    return theGrid;
+  };
+
   const [grid, setGrid] = useState<NodeType[][]>(() => {
     const initialState = getInitialGrid();
     return initialState;
   });
-  const [mouseIsPressed, setMouseIsPressed] = useState(false);
 
   const resetGrid = () => {
     const visitedNodes = Array.from(
@@ -78,18 +101,74 @@ const Visualizer: React.FC = () => {
   };
 
   const handleMouseDown = (col: number, row: number) => {
-    const newGrid = getNewGridWithWallToggled(grid, col, row);
-    setGrid(newGrid);
+    const currNode = grid[col][row];
+
+    if (currNode.isStart) {
+      setPressedNodeStatus("start");
+      document.getElementById(`node-${col}-${row}`)!.className = "node";
+    } else if (currNode.isFinish) {
+      setPressedNodeStatus("finish");
+      document.getElementById(`node-${col}-${row}`)!.className = "node";
+    } else {
+      setPressedNodeStatus("");
+      const newGrid = getNewGridWithWallToggled(grid, col, row);
+      setGrid(newGrid);
+    }
+
     setMouseIsPressed(true);
   };
 
   const handleMouseEnter = (col: number, row: number) => {
     if (!mouseIsPressed) return;
-    const newGrid = getNewGridWithWallToggled(grid, col, row);
-    setGrid(newGrid);
+
+    const currNode = grid[col][row];
+
+    if (pressedNodeStatus === "start" && !currNode.isFinish) {
+      document.getElementById(
+        `node-${col}-${row}`
+      )!.className = `node node-${pressedNodeStatus}`;
+    } else if (pressedNodeStatus === "finish" && !currNode.isStart) {
+      document.getElementById(
+        `node-${col}-${row}`
+      )!.className = `node node-${pressedNodeStatus}`;
+    } else {
+      const newGrid = getNewGridWithWallToggled(grid, col, row);
+      setGrid(newGrid);
+    }
   };
 
-  const handleMouseUp = () => {
+  const handleMouseLeave = (col: number, row: number) => {
+    if (!mouseIsPressed) return;
+    const currNode = grid[col][row];
+    if (pressedNodeStatus === "start" && !currNode.isFinish) {
+      document.getElementById(`node-${col}-${row}`)!.className = "node";
+    } else if (pressedNodeStatus === "finish" && !currNode.isStart) {
+      document.getElementById(`node-${col}-${row}`)!.className = "node";
+    }
+  };
+
+  const handleMouseUp = (col: number, row: number) => {
+    if (!mouseIsPressed) return;
+    const currNode = grid[col][row];
+    if (pressedNodeStatus === "start" && !currNode.isFinish) {
+      setStartNodeCol(col);
+      setStartNodeRow(row);
+      document.getElementById(`node-${col}-${row}`)!.className =
+        "node node-start";
+      const newGrid = getGridWithNewStart(grid, col, row);
+      setGrid(newGrid);
+    }
+
+    if (pressedNodeStatus === "finish" && !currNode.isStart) {
+      setFinishNodeCol(col);
+      setFinishNodeRow(row);
+      document.getElementById(`node-${col}-${row}`)!.className =
+        "node node-finish";
+      const newGrid = getGridWithNewFinish(grid, col, row);
+      setGrid(newGrid);
+    }
+
+    setPressedNodeStatus("");
     setMouseIsPressed(false);
   };
 
@@ -125,8 +204,8 @@ const Visualizer: React.FC = () => {
   };
 
   const visualizeDijkstra = () => {
-    const startNode = grid[START_NODE_COL][START_NODE_ROW];
-    const finishNode = grid[FINISH_NODE_COL][FINISH_NODE_ROW];
+    const startNode = grid[startNodeCol][startNodeRow];
+    const finishNode = grid[finishNodeCol][finishNodeRow];
     const visitedNodesInOrder = dijkstra(grid, startNode, finishNode)!;
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
     animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
@@ -170,7 +249,12 @@ const Visualizer: React.FC = () => {
                     onMouseEnter={(col: number, row: number) =>
                       handleMouseEnter(col, row)
                     }
-                    onMouseUp={() => handleMouseUp()}
+                    onMouseLeave={(col: number, row: number) =>
+                      handleMouseLeave(col, row)
+                    }
+                    onMouseUp={(col: number, row: number) =>
+                      handleMouseUp(col, row)
+                    }
                   ></SingleNode>
                 );
               })}
