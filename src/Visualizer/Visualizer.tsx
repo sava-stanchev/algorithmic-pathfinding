@@ -50,6 +50,7 @@ const Visualizer: React.FC = () => {
   const [finishNodeRow, setFinishNodeRow] = useState(10);
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
   const [pressedNodeStatus, setPressedNodeStatus] = useState("");
+  const [selectedNode, setSelectedNode] = useState<NodeType>({} as NodeType);
 
   const createNode = (row: number, col: number) => {
     return {
@@ -102,13 +103,11 @@ const Visualizer: React.FC = () => {
 
   const handleMouseDown = (col: number, row: number) => {
     const currNode = grid[col][row];
-
+    setSelectedNode(currNode);
     if (currNode.isStart) {
       setPressedNodeStatus("start");
-      document.getElementById(`node-${col}-${row}`)!.className = "node";
     } else if (currNode.isFinish) {
       setPressedNodeStatus("finish");
-      document.getElementById(`node-${col}-${row}`)!.className = "node";
     } else {
       setPressedNodeStatus("");
       const newGrid = getNewGridWithWallToggled(grid, col, row);
@@ -150,22 +149,31 @@ const Visualizer: React.FC = () => {
   const handleMouseUp = (col: number, row: number) => {
     if (!mouseIsPressed) return;
     const currNode = grid[col][row];
-    if (pressedNodeStatus === "start" && !currNode.isFinish) {
-      setStartNodeCol(col);
-      setStartNodeRow(row);
-      document.getElementById(`node-${col}-${row}`)!.className =
-        "node node-start";
-      const newGrid = getGridWithNewStart(grid, col, row);
-      setGrid(newGrid);
-    }
+    if (JSON.stringify(selectedNode) === JSON.stringify(currNode)) {
+    } else {
+      if (pressedNodeStatus === "start" && !currNode.isFinish) {
+        setStartNodeCol(col);
+        setStartNodeRow(row);
+        document.getElementById(
+          `node-${selectedNode.col}-${selectedNode.row}`
+        )!.className = "node";
+        document.getElementById(`node-${col}-${row}`)!.className =
+          "node node-start";
+        const newGrid = getGridWithNewStart(grid, col, row);
+        setGrid(newGrid);
+      }
 
-    if (pressedNodeStatus === "finish" && !currNode.isStart) {
-      setFinishNodeCol(col);
-      setFinishNodeRow(row);
-      document.getElementById(`node-${col}-${row}`)!.className =
-        "node node-finish";
-      const newGrid = getGridWithNewFinish(grid, col, row);
-      setGrid(newGrid);
+      if (pressedNodeStatus === "finish" && !currNode.isStart) {
+        setFinishNodeCol(col);
+        setFinishNodeRow(row);
+        document.getElementById(
+          `node-${selectedNode.col}-${selectedNode.row}`
+        )!.className = "node";
+        document.getElementById(`node-${col}-${row}`)!.className =
+          "node node-finish";
+        const newGrid = getGridWithNewFinish(grid, col, row);
+        setGrid(newGrid);
+      }
     }
 
     setPressedNodeStatus("");
