@@ -19,7 +19,8 @@ const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
         </p>
         <p>Click & drag the start and target nodes to move them.</p>
         <p>
-          Click on the grid to add walls. The path cannot cross through a wall.
+          Click on the grid to add/remove walls. The path cannot cross through a
+          wall.
         </p>
         <button className="modal-btn" onClick={onClose}>
           Okay... I understand

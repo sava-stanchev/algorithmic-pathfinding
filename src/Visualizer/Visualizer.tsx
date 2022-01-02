@@ -103,6 +103,36 @@ const Visualizer: React.FC = () => {
     setGrid(getInitialGrid());
   };
 
+  const createRandomMaze = () => {
+    resetGrid();
+    const newGrid = grid.slice();
+
+    for (let i = 0; i < newGrid.length; i++) {
+      for (let j = 0; j < newGrid[i].length; j++) {
+        let random = Math.random();
+        let currNode = document.getElementById(
+          `node-${newGrid[i][j].col}-${newGrid[i][j].row}`
+        )!;
+        let relevantClassNames = ["node node-start", "node node-finish"];
+
+        if (random < 0.25 && !relevantClassNames.includes(currNode.className)) {
+          currNode.className = "node node-wall";
+          newGrid[i][j].isWall = true;
+        }
+
+        if (
+          random >= 0.25 &&
+          !relevantClassNames.includes(currNode.className)
+        ) {
+          currNode.className = "node";
+          newGrid[i][j].isWall = false;
+        }
+      }
+    }
+
+    setGrid(newGrid);
+  };
+
   const handleMouseDown = (col: number, row: number) => {
     const currNode = grid[col][row];
     setSelectedNode(currNode);
@@ -128,10 +158,12 @@ const Visualizer: React.FC = () => {
       document.getElementById(
         `node-${col}-${row}`
       )!.className = `node node-${pressedNodeStatus}`;
+      currNode.isWall = false;
     } else if (pressedNodeStatus === "finish" && !currNode.isStart) {
       document.getElementById(
         `node-${col}-${row}`
       )!.className = `node node-${pressedNodeStatus}`;
+      currNode.isWall = false;
     } else {
       const newGrid = getNewGridWithWallToggled(grid, col, row);
       setGrid(newGrid);
@@ -224,6 +256,9 @@ const Visualizer: React.FC = () => {
   return (
     <div className="container">
       <div className="buttons-container">
+        <button className="visualize-btn" onClick={() => createRandomMaze()}>
+          Generate Maze
+        </button>
         <div className="start-icon">
           <StartIcon />
         </div>
