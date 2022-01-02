@@ -5,6 +5,7 @@ import { NodeType } from "./SingleNode/SingleNode";
 import { ReactComponent as StartIcon } from "../Icons/start.svg";
 import { ReactComponent as TargetIcon } from "../Icons/target.svg";
 import "./Visualizer.css";
+import TutorialModal from "../Modal/TutorialModal";
 
 const getNewGridWithWallToggled = (
   grid: NodeType[][],
@@ -51,6 +52,7 @@ const Visualizer: React.FC = () => {
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
   const [pressedNodeStatus, setPressedNodeStatus] = useState("");
   const [selectedNode, setSelectedNode] = useState<NodeType>({} as NodeType);
+  const [open, setOpen] = useState(true);
 
   const createNode = (row: number, col: number) => {
     return {
@@ -270,6 +272,7 @@ const Visualizer: React.FC = () => {
           );
         })}
       </div>
+      <TutorialModal open={open} onClose={() => setOpen(false)} />
     </div>
   );
 };
