@@ -18,7 +18,7 @@ body {
 .start-icon {
   background-color: white;
   font-size: medium;
-  padding: 14px 0;
+  padding: 12px 0;
   border: none;
 }
 
@@ -26,7 +26,7 @@ body {
   background-color: white;
   font-size: large;
   color: black;
-  padding: 14px 8px;
+  padding: 12px 8px;
   border: none;
   border-radius: 5px;
 }
@@ -35,7 +35,7 @@ body {
   background-color: #48c9b0;
   font-size: medium;
   color: white;
-  padding: 14px 8px;
+  padding: 12px 8px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -51,7 +51,7 @@ body {
   background-color: #34495e;
   font-size: medium;
   color: white;
-  padding: 14px 8px;
+  padding: 12px 8px;
   border: none;
   border-radius: 5px;
   cursor: pointer;

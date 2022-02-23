@@ -9,12 +9,14 @@
   background-image: url("../../Icons/start.svg");
   background-repeat: no-repeat;
   background-position: center center;
+  background-color: rgb(255, 254, 106);
 }
 
 .node-finish {
   background-image: url("../../Icons/target.svg");
   background-repeat: no-repeat;
   background-position: center center;
+  background-color: rgb(255, 254, 106);
 }
 
 .node-visited {
