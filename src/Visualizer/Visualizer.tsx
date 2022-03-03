@@ -195,6 +195,12 @@ const Visualizer: React.FC = () => {
           "node node-start";
         const newGrid = getGridWithNewStart(grid, col, row);
         setGrid(newGrid);
+      } else if (pressedNodeStatus === "start" && currNode.isFinish) {
+        setStartNodeCol(selectedNode.col);
+        setStartNodeRow(selectedNode.row);
+        document.getElementById(
+          `node-${selectedNode.col}-${selectedNode.row}`
+        )!.className = "node node-start";
       }
 
       if (pressedNodeStatus === "finish" && !currNode.isStart) {
@@ -207,6 +213,12 @@ const Visualizer: React.FC = () => {
           "node node-finish";
         const newGrid = getGridWithNewFinish(grid, col, row);
         setGrid(newGrid);
+      } else if (pressedNodeStatus === "finish" && currNode.isStart) {
+        setFinishNodeCol(selectedNode.col);
+        setFinishNodeRow(selectedNode.row);
+        document.getElementById(
+          `node-${selectedNode.col}-${selectedNode.row}`
+        )!.className = "node node-finish";
       }
     }
 
