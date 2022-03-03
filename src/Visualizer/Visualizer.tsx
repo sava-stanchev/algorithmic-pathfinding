@@ -6,6 +6,7 @@ import { ReactComponent as StartIcon } from "../Icons/start.svg";
 import { ReactComponent as TargetIcon } from "../Icons/target.svg";
 import "./Visualizer.css";
 import TutorialModal from "../Modal/TutorialModal";
+import { createRandomMaze } from "../MazeAlgorithms/RandomMaze";
 
 const getNewGridWithWallToggled = (
   grid: NodeType[][],
@@ -103,34 +104,9 @@ const Visualizer: React.FC = () => {
     setGrid(getInitialGrid());
   };
 
-  const createRandomMaze = () => {
+  const generateRandomMaze = () => {
     resetGrid();
-    const newGrid = grid.slice();
-
-    for (let i = 0; i < newGrid.length; i++) {
-      for (let j = 0; j < newGrid[i].length; j++) {
-        let random = Math.random();
-        let currNode = document.getElementById(
-          `node-${newGrid[i][j].col}-${newGrid[i][j].row}`
-        )!;
-        let relevantClassNames = ["node node-start", "node node-finish"];
-
-        if (random < 0.25 && !relevantClassNames.includes(currNode.className)) {
-          currNode.className = "node node-wall";
-          newGrid[i][j].isWall = true;
-        }
-
-        if (
-          random >= 0.25 &&
-          !relevantClassNames.includes(currNode.className)
-        ) {
-          currNode.className = "node";
-          newGrid[i][j].isWall = false;
-        }
-      }
-    }
-
-    setGrid(newGrid);
+    setGrid(createRandomMaze(grid));
   };
 
   const handleMouseDown = (col: number, row: number) => {
@@ -268,7 +244,7 @@ const Visualizer: React.FC = () => {
   return (
     <div className="container">
       <div className="buttons-container">
-        <button className="visualize-btn" onClick={() => createRandomMaze()}>
+        <button className="visualize-btn" onClick={() => generateRandomMaze()}>
           Generate Maze
         </button>
         <div className="start-icon">
