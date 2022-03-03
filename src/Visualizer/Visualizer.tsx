@@ -7,6 +7,7 @@ import { ReactComponent as TargetIcon } from "../Icons/target.svg";
 import "./Visualizer.css";
 import TutorialModal from "../Modal/TutorialModal";
 import { createRandomMaze } from "../MazeAlgorithms/RandomMaze";
+import { createRecursiveDivisionMaze } from "../MazeAlgorithms/RecursiveDivisionMaze";
 
 const getNewGridWithWallToggled = (
   grid: NodeType[][],
@@ -107,6 +108,13 @@ const Visualizer: React.FC = () => {
   const generateRandomMaze = () => {
     resetGrid();
     setGrid(createRandomMaze(grid));
+  };
+
+  const generateRecursiveDivisionMaze = () => {
+    resetGrid();
+    setGrid(
+      createRecursiveDivisionMaze(grid, 2, 18, 2, 37, "horizontal", false)
+    );
   };
 
   const handleMouseDown = (col: number, row: number) => {
@@ -244,7 +252,10 @@ const Visualizer: React.FC = () => {
   return (
     <div className="container">
       <div className="buttons-container">
-        <button className="visualize-btn" onClick={() => generateRandomMaze()}>
+        <button
+          className="visualize-btn"
+          onClick={() => generateRecursiveDivisionMaze()}
+        >
           Generate Maze
         </button>
         <div className="start-icon">
