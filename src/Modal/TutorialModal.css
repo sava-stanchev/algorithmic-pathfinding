@@ -40,3 +40,7 @@
 .modal-btn:hover {
   background-color: #31bea2;
 }
+
+p {
+  margin: 1rem 0;
+}

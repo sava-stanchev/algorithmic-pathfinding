@@ -266,7 +266,7 @@ const Visualizer: React.FC = () => {
               style={{
                 width: 16,
                 height: "auto",
-                marginLeft: 16,
+                marginLeft: 24,
                 fill: "white",
               }}
             />
