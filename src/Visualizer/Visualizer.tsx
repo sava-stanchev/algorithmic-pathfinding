@@ -4,6 +4,7 @@ import SingleNode from "./SingleNode/SingleNode";
 import { NodeType } from "./SingleNode/SingleNode";
 import { ReactComponent as StartIcon } from "../Icons/start.svg";
 import { ReactComponent as TargetIcon } from "../Icons/target.svg";
+import { ReactComponent as DropdownIcon } from "../Icons/dropdown-arrow.svg";
 import "./Visualizer.css";
 import TutorialModal from "../Modal/TutorialModal";
 import { createRandomMaze } from "../MazeAlgorithms/RandomMaze";
@@ -55,6 +56,7 @@ const Visualizer: React.FC = () => {
   const [pressedNodeStatus, setPressedNodeStatus] = useState("");
   const [selectedNode, setSelectedNode] = useState<NodeType>({} as NodeType);
   const [open, setOpen] = useState(true);
+  const [isMazeDropdownOpen, setIsMazeDropdownOpen] = useState(false);
 
   const createNode = (row: number, col: number) => {
     return {
@@ -108,6 +110,7 @@ const Visualizer: React.FC = () => {
   const generateRandomMaze = () => {
     resetGrid();
     setGrid(createRandomMaze(grid));
+    setIsMazeDropdownOpen(!isMazeDropdownOpen);
   };
 
   const generateRecursiveDivisionMaze = () => {
@@ -115,6 +118,7 @@ const Visualizer: React.FC = () => {
     setGrid(
       createRecursiveDivisionMaze(grid, 2, 18, 2, 37, "horizontal", false)
     );
+    setIsMazeDropdownOpen(!isMazeDropdownOpen);
   };
 
   const handleMouseDown = (col: number, row: number) => {
@@ -252,12 +256,30 @@ const Visualizer: React.FC = () => {
   return (
     <div className="container">
       <div className="buttons-container">
-        <button
-          className="visualize-btn"
-          onClick={() => generateRecursiveDivisionMaze()}
-        >
-          Generate Maze
-        </button>
+        <div className="maze-options-container">
+          <button
+            className="generate-maze-btn"
+            onClick={() => setIsMazeDropdownOpen(!isMazeDropdownOpen)}
+          >
+            Generate Maze
+            <DropdownIcon
+              style={{
+                width: 16,
+                height: "auto",
+                marginLeft: 16,
+                fill: "white",
+              }}
+            />
+          </button>
+          {isMazeDropdownOpen ? (
+            <ul className="maze-options">
+              <li onClick={() => generateRecursiveDivisionMaze()}>
+                Recursive Division Maze
+              </li>
+              <li onClick={() => generateRandomMaze()}>Basic Random Maze</li>
+            </ul>
+          ) : null}
+        </div>
         <div className="start-icon">
           <StartIcon />
         </div>

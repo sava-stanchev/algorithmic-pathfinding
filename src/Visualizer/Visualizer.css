@@ -1,5 +1,12 @@
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
 body {
-  min-width: 1033px;
   font-family: "Inter", sans-serif;
 }
 
@@ -13,20 +20,22 @@ body {
 
 .buttons-container {
   display: flex;
+  margin-top: 10px;
 }
 
 .start-icon {
   background-color: white;
   font-size: medium;
   padding: 12px 0;
+  margin-top: 2px;
   border: none;
 }
 
 .explain-icons {
-  background-color: white;
   font-size: large;
   color: black;
   padding: 12px 8px;
+  margin-top: 3px;
   border: none;
   border-radius: 5px;
 }
@@ -65,4 +74,48 @@ body {
   display: flex;
   margin: 30px;
   max-width: 100%;
+}
+
+.maze-options-container {
+  position: relative;
+  padding: 0.2rem 0;
+}
+
+.generate-maze-btn {
+  display: flex;
+  background-color: #48c9b0;
+  font-size: medium;
+  color: white;
+  padding: 16px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.maze-options {
+  position: absolute;
+  background-color: #48c9b0;
+  border-radius: 5px;
+  color: white;
+  font-size: 15px;
+  padding: 0.5rem 1rem;
+  list-style: none;
+  white-space: nowrap;
+  overflow: hidden;
+  margin-top: 0.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.maze-options li {
+  margin: 0.5rem 0;
+  cursor: pointer;
+  padding: 0.2rem;
+}
+
+li:hover {
+  background-color: #34495e;
 }
