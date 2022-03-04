@@ -12,7 +12,7 @@ export const createRecursiveDivisionMaze = (
   const newGrid = grid.slice();
 
   if (rowEnd < rowStart || colEnd < colStart) {
-    return;
+    return newGrid;
   }
 
   if (!surroundingWalls) {
@@ -193,5 +193,5 @@ export const createRecursiveDivisionMaze = (
     }
   }
 
-  return newGrid!;
+  return newGrid;
 };
