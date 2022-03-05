@@ -79,6 +79,7 @@ body {
 .maze-options-container {
   position: relative;
   padding: 0.2rem 0;
+  z-index: 1;
 }
 
 .generate-maze-btn {

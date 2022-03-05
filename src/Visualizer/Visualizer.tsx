@@ -104,7 +104,18 @@ const Visualizer: React.FC = () => {
       .concat(shortestPathNodes, wallNodes)
       .forEach((node) => (node.className = "node"));
 
-    setGrid(getInitialGrid());
+    const clearGrid = grid.slice();
+
+    for (let i = 0; i < clearGrid.length; i++) {
+      for (let j = 0; j < clearGrid[i].length; j++) {
+        clearGrid[i][j].isWall = false;
+        clearGrid[i][j].isVisited = false;
+        clearGrid[i][j].previousNode = null;
+        clearGrid[i][j].distance = Infinity;
+      }
+    }
+
+    setGrid(clearGrid);
   };
 
   const generateRandomMaze = () => {
