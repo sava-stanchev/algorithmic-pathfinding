@@ -9,6 +9,7 @@ import "./Visualizer.css";
 import TutorialModal from "../Modal/TutorialModal";
 import { createRandomMaze } from "../MazeAlgorithms/RandomMaze";
 import { createRecursiveDivisionMaze } from "../MazeAlgorithms/RecursiveDivisionMaze";
+import { mazeGenerationAnimation } from "../MazeAlgorithms/MazeAnimation";
 
 const getNewGridWithWallToggled = (
   grid: NodeType[][],
@@ -21,6 +22,12 @@ const getNewGridWithWallToggled = (
     ...node,
     isWall: !node.isWall,
   };
+  let currNode = document.getElementById(`node-${node.col}-${node.row}`)!;
+  if (newNode.isWall) {
+    currNode.className = "node node-wall";
+  } else {
+    currNode.className = "node";
+  }
   newGrid[col][row] = newNode;
   return newGrid;
 };
@@ -130,6 +137,7 @@ const Visualizer: React.FC = () => {
       createRecursiveDivisionMaze(grid, 2, 18, 2, 37, "horizontal", false)
     );
     setIsMazeDropdownOpen(!isMazeDropdownOpen);
+    mazeGenerationAnimation(grid);
   };
 
   const handleMouseDown = (col: number, row: number) => {
@@ -332,7 +340,7 @@ const Visualizer: React.FC = () => {
           return (
             <div key={colIdx}>
               {col.map((node, nodeIdx) => {
-                const { row, col, isStart, isFinish, isWall } = node;
+                const { row, col, isStart, isFinish } = node;
                 return (
                   <SingleNode
                     key={nodeIdx}
@@ -340,7 +348,6 @@ const Visualizer: React.FC = () => {
                     row={row}
                     isStart={isStart}
                     isFinish={isFinish}
-                    isWall={isWall}
                     onMouseDown={(col: number, row: number) =>
                       handleMouseDown(col, row)
                     }

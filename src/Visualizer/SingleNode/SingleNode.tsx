@@ -16,7 +16,6 @@ type Props = {
   col: number;
   isStart: boolean;
   isFinish: boolean;
-  isWall: boolean;
   onMouseDown: (col: number, row: number) => void;
   onMouseEnter: (col: number, row: number) => void;
   onMouseLeave: (col: number, row: number) => void;
@@ -28,19 +27,12 @@ const SingleNode: React.FC<Props> = ({
   col,
   isStart,
   isFinish,
-  isWall,
   onMouseDown,
   onMouseEnter,
   onMouseLeave,
   onMouseUp,
 }) => {
-  const extraClassName = isFinish
-    ? "node-finish"
-    : isStart
-    ? "node-start"
-    : isWall
-    ? "node-wall"
-    : "";
+  const extraClassName = isFinish ? "node-finish" : isStart ? "node-start" : "";
 
   return (
     <div

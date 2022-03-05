@@ -29,7 +29,7 @@ export const createRecursiveDivisionMaze = (
             newGrid[i][j].row === 20 ||
             newGrid[i][j].col === 39
           ) {
-            currNode.className = "node node-wall";
+            // currNode.className = "node node-wall";
             newGrid[i][j].isWall = true;
           }
         }
@@ -65,7 +65,7 @@ export const createRecursiveDivisionMaze = (
         ) {
           let relevantClassNames = ["node node-start", "node node-finish"];
           if (!relevantClassNames.includes(currNode.className)) {
-            currNode.className = "node node-wall";
+            // currNode.className = "node node-wall";
             newGrid[i][j].isWall = true;
           }
         }
@@ -141,7 +141,7 @@ export const createRecursiveDivisionMaze = (
         ) {
           let relevantClassNames = ["node node-start", "node node-finish"];
           if (!relevantClassNames.includes(currNode.className)) {
-            currNode.className = "node node-wall";
+            // currNode.className = "node node-wall";
             newGrid[i][j].isWall = true;
           }
         }
