@@ -264,6 +264,27 @@ const Visualizer: React.FC = () => {
     animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
   };
 
+  const handleMouseLeaveGrid = () => {
+    if (pressedNodeStatus === "start") {
+      setStartNodeCol(selectedNode.col);
+      setStartNodeRow(selectedNode.row);
+      document.getElementById(
+        `node-${selectedNode.col}-${selectedNode.row}`
+      )!.className = "node node-start";
+    }
+
+    if (pressedNodeStatus === "finish") {
+      setFinishNodeCol(selectedNode.col);
+      setFinishNodeRow(selectedNode.row);
+      document.getElementById(
+        `node-${selectedNode.col}-${selectedNode.row}`
+      )!.className = "node node-finish";
+    }
+
+    setPressedNodeStatus("");
+    setMouseIsPressed(false);
+  };
+
   return (
     <div className="container">
       <div className="buttons-container">
@@ -306,7 +327,7 @@ const Visualizer: React.FC = () => {
           Reset
         </button>
       </div>
-      <div className="grid">
+      <div className="grid" onMouseLeave={() => handleMouseLeaveGrid()}>
         {grid.map((col, colIdx) => {
           return (
             <div key={colIdx}>
