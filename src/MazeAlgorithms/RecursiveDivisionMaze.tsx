@@ -7,12 +7,13 @@ export const createRecursiveDivisionMaze = (
   colStart: number,
   colEnd: number,
   orientation: string,
-  surroundingWalls: boolean
-) => {
+  surroundingWalls: boolean,
+  wallsToAnimate: HTMLElement[]
+): [NodeType[][], HTMLElement[]] => {
   const newGrid = grid.slice();
 
   if (rowEnd < rowStart || colEnd < colStart) {
-    return newGrid;
+    return [newGrid, wallsToAnimate];
   }
 
   if (!surroundingWalls) {
@@ -30,6 +31,7 @@ export const createRecursiveDivisionMaze = (
             newGrid[i][j].col === 39
           ) {
             // currNode.className = "node node-wall";
+            wallsToAnimate.push(currNode);
             newGrid[i][j].isWall = true;
           }
         }
@@ -66,6 +68,7 @@ export const createRecursiveDivisionMaze = (
           let relevantClassNames = ["node node-start", "node node-finish"];
           if (!relevantClassNames.includes(currNode.className)) {
             // currNode.className = "node node-wall";
+            wallsToAnimate.push(currNode);
             newGrid[i][j].isWall = true;
           }
         }
@@ -79,7 +82,8 @@ export const createRecursiveDivisionMaze = (
         colStart,
         colEnd,
         orientation,
-        surroundingWalls
+        surroundingWalls,
+        wallsToAnimate
       );
     } else {
       createRecursiveDivisionMaze(
@@ -89,7 +93,8 @@ export const createRecursiveDivisionMaze = (
         colStart,
         colEnd,
         "vertical",
-        surroundingWalls
+        surroundingWalls,
+        wallsToAnimate
       );
     }
 
@@ -101,7 +106,8 @@ export const createRecursiveDivisionMaze = (
         colStart,
         colEnd,
         orientation,
-        surroundingWalls
+        surroundingWalls,
+        wallsToAnimate
       );
     } else {
       createRecursiveDivisionMaze(
@@ -111,7 +117,8 @@ export const createRecursiveDivisionMaze = (
         colStart,
         colEnd,
         "vertical",
-        surroundingWalls
+        surroundingWalls,
+        wallsToAnimate
       );
     }
   } else {
@@ -142,6 +149,7 @@ export const createRecursiveDivisionMaze = (
           let relevantClassNames = ["node node-start", "node node-finish"];
           if (!relevantClassNames.includes(currNode.className)) {
             // currNode.className = "node node-wall";
+            wallsToAnimate.push(currNode);
             newGrid[i][j].isWall = true;
           }
         }
@@ -156,7 +164,8 @@ export const createRecursiveDivisionMaze = (
         colStart,
         currentCol - 2,
         "horizontal",
-        surroundingWalls
+        surroundingWalls,
+        wallsToAnimate
       );
     } else {
       createRecursiveDivisionMaze(
@@ -166,7 +175,8 @@ export const createRecursiveDivisionMaze = (
         colStart,
         currentCol - 2,
         orientation,
-        surroundingWalls
+        surroundingWalls,
+        wallsToAnimate
       );
     }
 
@@ -178,7 +188,8 @@ export const createRecursiveDivisionMaze = (
         currentCol + 2,
         colEnd,
         "horizontal",
-        surroundingWalls
+        surroundingWalls,
+        wallsToAnimate
       );
     } else {
       createRecursiveDivisionMaze(
@@ -188,10 +199,11 @@ export const createRecursiveDivisionMaze = (
         currentCol + 2,
         colEnd,
         orientation,
-        surroundingWalls
+        surroundingWalls,
+        wallsToAnimate
       );
     }
   }
 
-  return newGrid;
+  return [newGrid, wallsToAnimate];
 };

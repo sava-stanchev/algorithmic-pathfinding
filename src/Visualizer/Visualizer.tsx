@@ -133,11 +133,21 @@ const Visualizer: React.FC = () => {
 
   const generateRecursiveDivisionMaze = () => {
     resetGrid();
-    setGrid(
-      createRecursiveDivisionMaze(grid, 2, 18, 2, 37, "horizontal", false)
+    const wallsToAnimate: HTMLElement[] = [];
+    const [newGrid, theWalls] = createRecursiveDivisionMaze(
+      grid,
+      2,
+      18,
+      2,
+      37,
+      "horizontal",
+      false,
+      wallsToAnimate
     );
+
+    setGrid(newGrid);
     setIsMazeDropdownOpen(!isMazeDropdownOpen);
-    mazeGenerationAnimation(grid);
+    mazeGenerationAnimation(theWalls);
   };
 
   const handleMouseDown = (col: number, row: number) => {
