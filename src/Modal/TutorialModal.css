@@ -27,7 +27,7 @@
 }
 
 .modal-btn {
-  background-color: #48c9b0;
+  background-color: #8b3c81;
   font-size: medium;
   color: white;
   padding: 14px 8px;
@@ -38,7 +38,7 @@
 }
 
 .modal-btn:hover {
-  background-color: #31bea2;
+  color: #ffd700;
 }
 
 p {

@@ -7,6 +7,7 @@
 }
 
 body {
+  background-color: rgba(231, 231, 231, 1);
   font-family: "Inter", sans-serif;
 }
 
@@ -24,7 +25,6 @@ body {
 }
 
 .start-icon {
-  background-color: white;
   font-size: medium;
   padding: 12px 0;
   margin-top: 2px;
@@ -41,7 +41,7 @@ body {
 }
 
 .visualize-btn {
-  background-color: #48c9b0;
+  background-color: #8b3c81;
   font-size: medium;
   color: white;
   padding: 12px 8px;
@@ -52,12 +52,8 @@ body {
   margin-right: 20px;
 }
 
-.visualize-btn:hover {
-  background-color: #31bea2;
-}
-
 .reset-btn {
-  background-color: #34495e;
+  background-color: #34495ebe;
   font-size: medium;
   color: white;
   padding: 12px 8px;
@@ -67,7 +63,7 @@ body {
 }
 
 .reset-btn:hover {
-  background-color: #34495ebe;
+  background-color: #3b3c49;
 }
 
 .grid {
@@ -84,9 +80,9 @@ body {
 
 .generate-maze-btn {
   display: flex;
-  background-color: #48c9b0;
-  font-size: medium;
+  background-color: #8b3c81;
   color: white;
+  font-size: medium;
   padding: 16px 30px;
   border: none;
   border-radius: 5px;
@@ -96,9 +92,9 @@ body {
 
 .maze-options {
   position: absolute;
-  background-color: #48c9b0;
-  border-radius: 5px;
+  background-color: #8b3c81;
   color: white;
+  border-radius: 5px;
   font-size: 15px;
   padding: 0.5rem 1rem;
   list-style: none;
@@ -115,5 +111,5 @@ body {
 }
 
 li:hover {
-  background-color: #34495e;
+  color: #ffd700;
 }
