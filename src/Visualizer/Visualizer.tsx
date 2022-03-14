@@ -28,6 +28,7 @@ const Visualizer: React.FC = () => {
   const [selectedNode, setSelectedNode] = useState<NodeType>({} as NodeType);
   const [open, setOpen] = useState(true);
   const [isMazeDropdownOpen, setIsMazeDropdownOpen] = useState(false);
+  const [isAlgoDropdownOpen, setIsAlgoDropdownOpen] = useState(false);
 
   const createNode = (row: number, col: number) => {
     return {
@@ -92,12 +93,13 @@ const Visualizer: React.FC = () => {
 
   const generateRandomMaze = () => {
     resetGrid();
-    setGrid(createRandomMaze(grid));
     setIsMazeDropdownOpen(!isMazeDropdownOpen);
+    setGrid(createRandomMaze(grid));
   };
 
   const generateRecursiveDivisionMaze = () => {
     resetGrid();
+    setIsMazeDropdownOpen(!isMazeDropdownOpen);
     const wallsToAnimate: HTMLElement[] = [];
     const [newGrid, theWalls] = createRecursiveDivisionMaze(
       grid,
@@ -111,7 +113,6 @@ const Visualizer: React.FC = () => {
     );
 
     setGrid(newGrid);
-    setIsMazeDropdownOpen(!isMazeDropdownOpen);
     mazeGenerationAnimation(theWalls);
   };
 
@@ -240,6 +241,7 @@ const Visualizer: React.FC = () => {
   };
 
   const visualizeDijkstra = () => {
+    setIsAlgoDropdownOpen(!isAlgoDropdownOpen);
     const startNode = grid[startNodeCol][startNodeRow];
     const finishNode = grid[finishNodeCol][finishNodeRow];
     const visitedNodesInOrder = dijkstra(grid, startNode, finishNode)!;
@@ -249,6 +251,7 @@ const Visualizer: React.FC = () => {
   };
 
   const visualizeAStar = () => {
+    setIsAlgoDropdownOpen(!isAlgoDropdownOpen);
     const startNode = grid[startNodeCol][startNodeRow];
     const finishNode = grid[finishNodeCol][finishNodeRow];
     const visitedNodesInOrder = AStar(grid, startNode, finishNode)!;
@@ -281,9 +284,9 @@ const Visualizer: React.FC = () => {
   return (
     <div className="container">
       <div className="buttons-container">
-        <div className="maze-options-container">
+        <div className="options-container">
           <button
-            className="generate-maze-btn"
+            className="btn"
             onClick={() => setIsMazeDropdownOpen(!isMazeDropdownOpen)}
           >
             Generate Maze
@@ -297,7 +300,7 @@ const Visualizer: React.FC = () => {
             />
           </button>
           {isMazeDropdownOpen ? (
-            <ul className="maze-options">
+            <ul className="options">
               <li onClick={() => generateRecursiveDivisionMaze()}>
                 Recursive Division Maze
               </li>
@@ -308,14 +311,33 @@ const Visualizer: React.FC = () => {
         <div className="start-icon">
           <StartIcon />
         </div>
-        <div className="explain-icons">Start Node &nbsp;</div>
+        <div className="explain-icons">Start Node</div>
         <div className="start-icon">
           <TargetIcon />
         </div>
         <div className="explain-icons">Target Node</div>
-        <button className="visualize-btn" onClick={() => visualizeAStar()}>
-          Visualize Algorithm
-        </button>
+        <div className="options-container">
+          <button
+            className="btn"
+            onClick={() => setIsAlgoDropdownOpen(!isAlgoDropdownOpen)}
+          >
+            Visualize Algo
+            <DropdownIcon
+              style={{
+                width: 16,
+                height: "auto",
+                marginLeft: 24,
+                fill: "white",
+              }}
+            />
+          </button>
+          {isAlgoDropdownOpen ? (
+            <ul className="options">
+              <li onClick={() => visualizeDijkstra()}>Dijkstra</li>
+              <li onClick={() => visualizeAStar()}>A*</li>
+            </ul>
+          ) : null}
+        </div>
         <button className="reset-btn" onClick={() => resetGrid()}>
           Reset
         </button>

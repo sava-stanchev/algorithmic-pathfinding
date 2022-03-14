@@ -1,14 +1,19 @@
+html {
+  font-size: 100%;
+  box-sizing: border-box;
+}
+
 *,
 ::before,
 ::after {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+  box-sizing: inherit;
 }
 
 body {
   background-color: rgba(231, 231, 231, 1);
   font-family: "Inter", sans-serif;
+  padding: 0;
+  margin: 0;
 }
 
 .container {
@@ -21,12 +26,14 @@ body {
 
 .buttons-container {
   display: flex;
-  margin-top: 10px;
+  margin-top: 0.625rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .start-icon {
   font-size: medium;
-  padding: 12px 0;
+  padding: 0.75rem 0;
   margin-top: 2px;
   border: none;
 }
@@ -34,68 +41,58 @@ body {
 .explain-icons {
   font-size: large;
   color: black;
-  padding: 12px 8px;
-  margin-top: 3px;
+  padding: 0.75rem 0.5rem;
+  margin-top: 0.188rem;
+  margin-right: 1rem;
   border: none;
-  border-radius: 5px;
-}
-
-.visualize-btn {
-  background-color: #8b3c81;
-  font-size: medium;
-  color: white;
-  padding: 12px 8px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-left: 20px;
-  margin-right: 20px;
+  border-radius: 0.313rem;
 }
 
 .reset-btn {
-  background-color: #34495ebe;
+  background-color: #525364;
   font-size: medium;
   color: white;
-  padding: 12px 8px;
+  padding: 0.75rem 1.625rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 0.313rem;
   cursor: pointer;
 }
 
 .reset-btn:hover {
-  background-color: #3b3c49;
+  background-color: #34495ebe;
 }
 
 .grid {
   display: flex;
-  margin: 30px;
+  margin: 1.875rem;
   max-width: 100%;
 }
 
-.maze-options-container {
+.options-container {
   position: relative;
   padding: 0.2rem 0;
   z-index: 1;
 }
 
-.generate-maze-btn {
+.btn {
   display: flex;
   background-color: #8b3c81;
   color: white;
   font-size: medium;
-  padding: 16px 30px;
+  padding: 1rem 1.875rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 0.313rem;
   cursor: pointer;
-  margin-right: 20px;
+  margin-right: 1.25rem;
 }
 
-.maze-options {
+.options {
   position: absolute;
+  width: 91%;
   background-color: #8b3c81;
   color: white;
-  border-radius: 5px;
-  font-size: 15px;
+  border-radius: 0.313rem;
+  font-size: 0.938rem;
   padding: 0.5rem 1rem;
   list-style: none;
   white-space: nowrap;
@@ -104,7 +101,7 @@ body {
   text-align: center;
 }
 
-.maze-options li {
+.options li {
   margin: 0.5rem 0;
   cursor: pointer;
   padding: 0.2rem;

@@ -1,7 +1,7 @@
 .node {
-  width: 25px;
-  height: 25px;
-  outline: 1px solid rgba(59, 60, 73, 0.5);
+  width: 1.563rem;
+  height: 1.563rem;
+  outline: 0.063rem solid rgba(59, 60, 73, 0.5);
   user-select: none;
 }
 
