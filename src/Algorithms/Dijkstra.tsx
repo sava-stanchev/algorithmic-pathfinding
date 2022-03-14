@@ -32,36 +32,28 @@ const updateUnvisitedNeighbors = (node: NodeType, grid: NodeType[][]) => {
   }
 };
 
-const dijkstra = (
+export const dijkstra = (
   grid: NodeType[][],
   startNode: NodeType,
   finishNode: NodeType
 ) => {
-  const visitedNodesInOrder = [];
+  if (!startNode || !finishNode || startNode === finishNode) {
+    return false;
+  }
+
   startNode.distance = 0;
   const unvisitedNodes = getAllNodes(grid);
+  const visitedNodesInOrder = [];
   while (!!unvisitedNodes.length) {
     sortNodesByDistance(unvisitedNodes);
     const closestNode = unvisitedNodes.shift();
     if (closestNode) {
       if (closestNode.isWall) continue;
       if (closestNode.distance === Infinity) return visitedNodesInOrder;
+      if (closestNode === finishNode) return visitedNodesInOrder;
       closestNode.isVisited = true;
       visitedNodesInOrder.push(closestNode);
-      if (closestNode === finishNode) return visitedNodesInOrder;
       updateUnvisitedNeighbors(closestNode, grid);
     }
   }
 };
-
-const getNodesInShortestPathOrder = (finishNode: NodeType | null) => {
-  const nodesInShortestPathOrder = [];
-  let currentNode = finishNode;
-  while (currentNode !== null) {
-    nodesInShortestPathOrder.unshift(currentNode);
-    currentNode = currentNode.previousNode;
-  }
-  return nodesInShortestPathOrder;
-};
-
-export { dijkstra, getNodesInShortestPathOrder };

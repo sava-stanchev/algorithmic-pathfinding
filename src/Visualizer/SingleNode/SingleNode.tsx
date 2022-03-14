@@ -6,6 +6,7 @@ export type NodeType = {
   isStart: boolean;
   isFinish: boolean;
   distance: number;
+  totalDistance: number;
   isVisited: boolean;
   previousNode: NodeType | null;
   isWall: boolean;

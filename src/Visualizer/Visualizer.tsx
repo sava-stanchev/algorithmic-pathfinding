@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { dijkstra, getNodesInShortestPathOrder } from "../Algorithms/Dijkstra";
+import { dijkstra } from "../Algorithms/Dijkstra";
 import SingleNode from "./SingleNode/SingleNode";
 import { NodeType } from "./SingleNode/SingleNode";
 import { ReactComponent as StartIcon } from "../Icons/start.svg";
@@ -14,7 +14,9 @@ import {
   getGridWithNewFinish,
   getGridWithNewStart,
   getNewGridWithWallToggled,
+  getNodesInShortestPathOrder,
 } from "./GetGridHelpers";
+import { AStar } from "../Algorithms/AStar";
 
 const Visualizer: React.FC = () => {
   const [startNodeCol, setStartNodeCol] = useState(10);
@@ -34,6 +36,7 @@ const Visualizer: React.FC = () => {
       isStart: col === startNodeCol && row === startNodeRow,
       isFinish: col === finishNodeCol && row === finishNodeRow,
       distance: Infinity,
+      totalDistance: Infinity,
       isVisited: false,
       previousNode: null,
       isWall: false,
@@ -205,7 +208,7 @@ const Visualizer: React.FC = () => {
     setMouseIsPressed(false);
   };
 
-  const animateDijkstra = (
+  const animateAlgorithm = (
     visitedNodesInOrder: NodeType[],
     nodesInShortestPathOrder: NodeType[]
   ) => {
@@ -217,7 +220,7 @@ const Visualizer: React.FC = () => {
         return;
       }
       setTimeout(() => {
-        if (i !== visitedNodesInOrder.length - 1) {
+        if (i !== visitedNodesInOrder.length) {
           const node = visitedNodesInOrder[i];
           document.getElementById(`node-${node.col}-${node.row}`)!.className =
             "node node-visited";
@@ -241,7 +244,17 @@ const Visualizer: React.FC = () => {
     const finishNode = grid[finishNodeCol][finishNodeRow];
     const visitedNodesInOrder = dijkstra(grid, startNode, finishNode)!;
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-    animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+    if (!visitedNodesInOrder) return;
+    animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
+  };
+
+  const visualizeAStar = () => {
+    const startNode = grid[startNodeCol][startNodeRow];
+    const finishNode = grid[finishNodeCol][finishNodeRow];
+    const visitedNodesInOrder = AStar(grid, startNode, finishNode)!;
+    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+    if (!visitedNodesInOrder) return;
+    animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
   };
 
   const handleMouseLeaveGrid = () => {
@@ -300,8 +313,8 @@ const Visualizer: React.FC = () => {
           <TargetIcon />
         </div>
         <div className="explain-icons">Target Node</div>
-        <button className="visualize-btn" onClick={() => visualizeDijkstra()}>
-          Visualize Dijkstra's Algorithm
+        <button className="visualize-btn" onClick={() => visualizeAStar()}>
+          Visualize Algorithm
         </button>
         <button className="reset-btn" onClick={() => resetGrid()}>
           Reset
