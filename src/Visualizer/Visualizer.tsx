@@ -241,31 +241,13 @@ const Visualizer: React.FC = () => {
     }
   };
 
-  const visualizeDijkstra = () => {
+  const visualizeAlgo = (
+    algoFunc: (arg0: NodeType[][], arg1: NodeType, arg2: NodeType) => void
+  ) => {
     setIsAlgoDropdownOpen(!isAlgoDropdownOpen);
     const startNode = grid[startNodeCol][startNodeRow];
     const finishNode = grid[finishNodeCol][finishNodeRow];
-    const visitedNodesInOrder = dijkstra(grid, startNode, finishNode)!;
-    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-    if (!visitedNodesInOrder) return;
-    animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
-  };
-
-  const visualizeAStar = () => {
-    setIsAlgoDropdownOpen(!isAlgoDropdownOpen);
-    const startNode = grid[startNodeCol][startNodeRow];
-    const finishNode = grid[finishNodeCol][finishNodeRow];
-    const visitedNodesInOrder = AStar(grid, startNode, finishNode)!;
-    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-    if (!visitedNodesInOrder) return;
-    animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
-  };
-
-  const visualizeDFS = () => {
-    setIsAlgoDropdownOpen(!isAlgoDropdownOpen);
-    const startNode = grid[startNodeCol][startNodeRow];
-    const finishNode = grid[finishNodeCol][finishNodeRow];
-    const visitedNodesInOrder = depthFirstSearch(grid, startNode, finishNode)!;
+    const visitedNodesInOrder = algoFunc(grid, startNode, finishNode)!;
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
     if (!visitedNodesInOrder) return;
     animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
@@ -344,9 +326,13 @@ const Visualizer: React.FC = () => {
           </button>
           {isAlgoDropdownOpen ? (
             <ul className="options">
-              <li onClick={() => visualizeDijkstra()}>Dijkstra's Algorithm</li>
-              <li onClick={() => visualizeAStar()}>A* Algorithm</li>
-              <li onClick={() => visualizeDFS()}>DFS Algorithm</li>
+              <li onClick={() => visualizeAlgo(dijkstra)}>
+                Dijkstra's Algorithm
+              </li>
+              <li onClick={() => visualizeAlgo(AStar)}>A* Algorithm</li>
+              <li onClick={() => visualizeAlgo(depthFirstSearch)}>
+                DFS Algorithm
+              </li>
             </ul>
           ) : null}
         </div>
