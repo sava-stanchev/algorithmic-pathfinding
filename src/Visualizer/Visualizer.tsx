@@ -17,6 +17,7 @@ import {
   getNewGridWithWallToggled,
 } from "../HelperFuncs/GetGridHelpers";
 import { getNodesInShortestPathOrder } from "../HelperFuncs/AlgorithmHelpers";
+import { depthFirstSearch } from "../Algorithms/DepthFirstSearch";
 
 const Visualizer: React.FC = () => {
   const [startNodeCol, setStartNodeCol] = useState(10);
@@ -260,6 +261,16 @@ const Visualizer: React.FC = () => {
     animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
   };
 
+  const visualizeDFS = () => {
+    setIsAlgoDropdownOpen(!isAlgoDropdownOpen);
+    const startNode = grid[startNodeCol][startNodeRow];
+    const finishNode = grid[finishNodeCol][finishNodeRow];
+    const visitedNodesInOrder = depthFirstSearch(grid, startNode, finishNode)!;
+    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+    if (!visitedNodesInOrder) return;
+    animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
+  };
+
   const handleMouseLeaveGrid = () => {
     if (pressedNodeStatus === "start") {
       setStartNodeCol(selectedNode.col);
@@ -335,6 +346,7 @@ const Visualizer: React.FC = () => {
             <ul className="options">
               <li onClick={() => visualizeDijkstra()}>Dijkstra's Algorithm</li>
               <li onClick={() => visualizeAStar()}>A* Algorithm</li>
+              <li onClick={() => visualizeDFS()}>DFS Algorithm</li>
             </ul>
           ) : null}
         </div>
