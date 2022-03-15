@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { dijkstra } from "../Algorithms/Dijkstra";
+import { AStar } from "../Algorithms/AStar";
 import SingleNode from "./SingleNode/SingleNode";
 import { NodeType } from "./SingleNode/SingleNode";
 import { ReactComponent as StartIcon } from "../Icons/start.svg";
@@ -14,9 +15,8 @@ import {
   getGridWithNewFinish,
   getGridWithNewStart,
   getNewGridWithWallToggled,
-  getNodesInShortestPathOrder,
-} from "./GetGridHelpers";
-import { AStar } from "../Algorithms/AStar";
+} from "../HelperFuncs/GetGridHelpers";
+import { getNodesInShortestPathOrder } from "../HelperFuncs/AlgorithmHelpers";
 
 const Visualizer: React.FC = () => {
   const [startNodeCol, setStartNodeCol] = useState(10);
@@ -333,8 +333,8 @@ const Visualizer: React.FC = () => {
           </button>
           {isAlgoDropdownOpen ? (
             <ul className="options">
-              <li onClick={() => visualizeDijkstra()}>Dijkstra</li>
-              <li onClick={() => visualizeAStar()}>A*</li>
+              <li onClick={() => visualizeDijkstra()}>Dijkstra's Algorithm</li>
+              <li onClick={() => visualizeAStar()}>A* Algorithm</li>
             </ul>
           ) : null}
         </div>
