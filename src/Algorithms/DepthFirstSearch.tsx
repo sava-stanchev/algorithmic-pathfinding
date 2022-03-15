@@ -26,6 +26,4 @@ export const depthFirstSearch = (
       unvisitedNodes.unshift(unvisitedNeighbor);
     }
   }
-
-  return visitedNodesInOrder;
 };

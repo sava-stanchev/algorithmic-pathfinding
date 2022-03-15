@@ -28,7 +28,7 @@ export const AStar = (
     return false;
   }
 
-  let unvisitedNodes = [];
+  const unvisitedNodes = [];
   const visitedNodesInOrder = [];
   startNode.distance = 0;
   unvisitedNodes.push(startNode);
@@ -37,12 +37,12 @@ export const AStar = (
     unvisitedNodes.sort(
       (nodeA, nodeB) => nodeA.totalDistance - nodeB.totalDistance
     );
-    let closestNode = unvisitedNodes.shift();
+    const closestNode = unvisitedNodes.shift();
     if (closestNode === finishNode) return visitedNodesInOrder;
     if (closestNode) {
       closestNode.isVisited = true;
       visitedNodesInOrder.push(closestNode);
-      let neighbors = getUnvisitedNeighbors(closestNode, grid);
+      const neighbors = getUnvisitedNeighbors(closestNode, grid);
 
       for (let neighbor of neighbors) {
         let distance = closestNode.distance + 1;
@@ -62,5 +62,4 @@ export const AStar = (
       }
     }
   }
-  return visitedNodesInOrder;
 };
