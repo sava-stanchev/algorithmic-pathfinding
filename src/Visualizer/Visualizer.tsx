@@ -95,12 +95,14 @@ const Visualizer: React.FC = () => {
   const generateRandomMaze = () => {
     resetGrid();
     setIsMazeDropdownOpen(!isMazeDropdownOpen);
+    setIsAlgoDropdownOpen(false);
     setGrid(createRandomMaze(grid));
   };
 
   const generateRecursiveDivisionMaze = (skew: string) => {
     resetGrid();
     setIsMazeDropdownOpen(!isMazeDropdownOpen);
+    setIsAlgoDropdownOpen(false);
     const wallsToAnimate: HTMLElement[] = [];
     const [newGrid, theWalls] = createRecursiveDivisionMaze(
       grid,
@@ -246,6 +248,7 @@ const Visualizer: React.FC = () => {
     algoFunc: (arg0: NodeType[][], arg1: NodeType, arg2: NodeType) => void
   ) => {
     setIsAlgoDropdownOpen(!isAlgoDropdownOpen);
+    setIsMazeDropdownOpen(false);
     const startNode = grid[startNodeCol][startNodeRow];
     const finishNode = grid[finishNodeCol][finishNodeRow];
     const visitedNodesInOrder = algoFunc(grid, startNode, finishNode)!;
@@ -303,6 +306,9 @@ const Visualizer: React.FC = () => {
                 onClick={() => generateRecursiveDivisionMaze("horizontalSkew")}
               >
                 Horizontal Skew Maze
+              </li>
+              <li onClick={() => generateRecursiveDivisionMaze("verticalSkew")}>
+                Vertical Skew Maze
               </li>
             </ul>
           ) : null}

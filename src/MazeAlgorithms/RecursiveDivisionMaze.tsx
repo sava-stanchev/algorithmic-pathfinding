@@ -104,7 +104,7 @@ export const createRecursiveDivisionMaze = (
         rowEnd,
         colStart,
         colEnd,
-        orientation,
+        skew === "verticalSkew" ? "vertical" : orientation,
         surroundingWalls,
         wallsToAnimate,
         skew
@@ -163,7 +163,7 @@ export const createRecursiveDivisionMaze = (
         rowEnd,
         colStart,
         currentCol - 2,
-        "horizontal",
+        skew === "verticalSkew" ? "vertical" : "horizontal",
         surroundingWalls,
         wallsToAnimate,
         skew
