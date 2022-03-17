@@ -98,7 +98,7 @@ const Visualizer: React.FC = () => {
     setGrid(createRandomMaze(grid));
   };
 
-  const generateRecursiveDivisionMaze = () => {
+  const generateRecursiveDivisionMaze = (skew: string) => {
     resetGrid();
     setIsMazeDropdownOpen(!isMazeDropdownOpen);
     const wallsToAnimate: HTMLElement[] = [];
@@ -110,7 +110,8 @@ const Visualizer: React.FC = () => {
       37,
       "horizontal",
       false,
-      wallsToAnimate
+      wallsToAnimate,
+      skew
     );
 
     setGrid(newGrid);
@@ -294,10 +295,15 @@ const Visualizer: React.FC = () => {
           </button>
           {isMazeDropdownOpen ? (
             <ul className="options">
-              <li onClick={() => generateRecursiveDivisionMaze()}>
+              <li onClick={() => generateRecursiveDivisionMaze("normal")}>
                 Recursive Division Maze
               </li>
               <li onClick={() => generateRandomMaze()}>Basic Random Maze</li>
+              <li
+                onClick={() => generateRecursiveDivisionMaze("horizontalSkew")}
+              >
+                Horizontal Skew Maze
+              </li>
             </ul>
           ) : null}
         </div>

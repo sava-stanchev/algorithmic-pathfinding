@@ -8,7 +8,8 @@ export const createRecursiveDivisionMaze = (
   colEnd: number,
   orientation: string,
   surroundingWalls: boolean,
-  wallsToAnimate: HTMLElement[]
+  wallsToAnimate: HTMLElement[],
+  skew: string
 ): [NodeType[][], HTMLElement[]] => {
   if (rowEnd < rowStart || colEnd < colStart) {
     return [grid, wallsToAnimate];
@@ -79,7 +80,8 @@ export const createRecursiveDivisionMaze = (
         colEnd,
         orientation,
         surroundingWalls,
-        wallsToAnimate
+        wallsToAnimate,
+        skew
       );
     } else {
       createRecursiveDivisionMaze(
@@ -88,9 +90,10 @@ export const createRecursiveDivisionMaze = (
         currentRow - 2,
         colStart,
         colEnd,
-        "vertical",
+        skew === "horizontalSkew" ? "horizontal" : "vertical",
         surroundingWalls,
-        wallsToAnimate
+        wallsToAnimate,
+        skew
       );
     }
 
@@ -103,7 +106,8 @@ export const createRecursiveDivisionMaze = (
         colEnd,
         orientation,
         surroundingWalls,
-        wallsToAnimate
+        wallsToAnimate,
+        skew
       );
     } else {
       createRecursiveDivisionMaze(
@@ -114,7 +118,8 @@ export const createRecursiveDivisionMaze = (
         colEnd,
         "vertical",
         surroundingWalls,
-        wallsToAnimate
+        wallsToAnimate,
+        skew
       );
     }
   } else {
@@ -160,7 +165,8 @@ export const createRecursiveDivisionMaze = (
         currentCol - 2,
         "horizontal",
         surroundingWalls,
-        wallsToAnimate
+        wallsToAnimate,
+        skew
       );
     } else {
       createRecursiveDivisionMaze(
@@ -169,9 +175,10 @@ export const createRecursiveDivisionMaze = (
         rowEnd,
         colStart,
         currentCol - 2,
-        orientation,
+        skew === "horizontalSkew" ? "horizontal" : orientation,
         surroundingWalls,
-        wallsToAnimate
+        wallsToAnimate,
+        skew
       );
     }
 
@@ -184,7 +191,8 @@ export const createRecursiveDivisionMaze = (
         colEnd,
         "horizontal",
         surroundingWalls,
-        wallsToAnimate
+        wallsToAnimate,
+        skew
       );
     } else {
       createRecursiveDivisionMaze(
@@ -195,7 +203,8 @@ export const createRecursiveDivisionMaze = (
         colEnd,
         orientation,
         surroundingWalls,
-        wallsToAnimate
+        wallsToAnimate,
+        skew
       );
     }
   }
