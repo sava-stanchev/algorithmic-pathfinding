@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/algorithmic-pathfinding/static/css/main.f03c6158.css",
-    "main.js": "/algorithmic-pathfinding/static/js/main.39cfa305.js",
+    "main.css": "/algorithmic-pathfinding/static/css/main.bafb6d6e.css",
+    "main.js": "/algorithmic-pathfinding/static/js/main.30fe9d69.js",
     "static/media/dropdown-arrow.svg": "/algorithmic-pathfinding/static/media/dropdown-arrow.1b57139fae6e4e5990922317d47c01f2.svg",
     "index.html": "/algorithmic-pathfinding/index.html",
     "static/media/start.svg": "/algorithmic-pathfinding/static/media/start.416470b0ebc2751ce566197437ccc47a.svg",
     "static/media/target.svg": "/algorithmic-pathfinding/static/media/target.5c4ac6956327ce8f9b1677c65a0e46b5.svg",
-    "main.f03c6158.css.map": "/algorithmic-pathfinding/static/css/main.f03c6158.css.map",
-    "main.39cfa305.js.map": "/algorithmic-pathfinding/static/js/main.39cfa305.js.map"
+    "main.bafb6d6e.css.map": "/algorithmic-pathfinding/static/css/main.bafb6d6e.css.map",
+    "main.30fe9d69.js.map": "/algorithmic-pathfinding/static/js/main.30fe9d69.js.map"
   },
   "entrypoints": [
-    "static/css/main.f03c6158.css",
-    "static/js/main.39cfa305.js"
+    "static/css/main.bafb6d6e.css",
+    "static/js/main.30fe9d69.js"
   ]
 }
