@@ -4,7 +4,7 @@ import Visualizer from "./Visualizer/Visualizer";
 import MobileView from "./MobileView/MobileView";
 
 const App = () => {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
 
   const handleResize = () => {
     if (window.innerWidth < 1024) {

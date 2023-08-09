@@ -2,8 +2,17 @@
   width: 100%;
   height: 100vh;
   display: flex;
+  flex-direction: column;
+  gap: 25px;
   align-items: center;
   justify-content: center;
+  padding: 0 20px;
+}
+
+.mobile-text {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  text-align: center;
 }
 
 .emoji {
@@ -17,6 +26,7 @@
 .face {
   height: 100%;
   width: 100%;
+  animation: face 3s linear infinite;
 }
 
 .eyebrow {
@@ -24,6 +34,7 @@
   text-align: center;
   position: absolute;
   top: 20px;
+  animation: eyebrow 3s linear infinite;
 }
 
 .eyebrow span {
@@ -83,4 +94,51 @@
   top: 50%;
   left: calc(50% - 30px);
   background: linear-gradient(#481f00, #b96a46);
+  animation: mouth 3s linear infinite;
+}
+
+@keyframes face {
+  15%,
+  25% {
+    transform: rotate(25deg) translateX(-35px);
+  }
+  45%,
+  65% {
+    transform: rotate(-25deg) translateX(35px);
+  }
+  75%,
+  100% {
+    transform: rotate(0deg) translateX(0px);
+  }
+}
+
+@keyframes eyebrow {
+  15%,
+  65% {
+    top: 35px;
+  }
+  75%,
+  100%,
+  0% {
+    top: 15px;
+  }
+}
+
+@keyframes mouth {
+  10%,
+  30% {
+    width: 34px;
+    height: 34px;
+    left: calc(50% - 17px);
+  }
+  50%,
+  70% {
+    width: 60px;
+    height: 70px;
+    left: calc(50% - 30px);
+  }
+  75%,
+  100% {
+    height: 80px;
+  }
 }
