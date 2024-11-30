@@ -1,33 +1,37 @@
+import { useEffect, useRef } from "react";
 import "./TutorialModal.css";
-import ReactDom from "react-dom";
 
 type Props = {
-  open: boolean;
-  onClose: () => void;
+  openModal: boolean;
+  closeModal: () => void;
 };
 
-const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
-  if (!open) return null;
+const TutorialModal: React.FC<Props> = ({ openModal, closeModal }) => {
+  const ref = useRef<HTMLDialogElement>(null);
 
-  return ReactDom.createPortal(
-    <>
-      <div className="overlay-styles" />
-      <div className="modal-styles">
-        <p>
-          A pathfinding algorithm seeks to find the shortest path between two
-          points.
-        </p>
-        <p>Click & drag the start and target nodes to move them.</p>
-        <p>
-          Click on the grid to add/remove walls. The path cannot cross through a
-          wall.
-        </p>
-        <button className="modal-btn" onClick={onClose}>
-          Okay... I understand
-        </button>
-      </div>
-    </>,
-    document.getElementById("portal")!
+  useEffect(() => {
+    if (openModal) {
+      ref.current?.showModal();
+    } else {
+      ref.current?.close();
+    }
+  }, [openModal]);
+
+  return (
+    <dialog ref={ref} className="modal">
+      <p>
+        A pathfinding algorithm seeks to find the shortest path between two
+        points.
+      </p>
+      <p>Click & drag the start and target nodes to move them.</p>
+      <p>
+        Click on the grid to add/remove walls. The path cannot cross through a
+        wall.
+      </p>
+      <button className="modal-btn" onClick={closeModal}>
+        Okay... I understand
+      </button>
+    </dialog>
   );
 };
 

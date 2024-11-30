@@ -27,7 +27,7 @@ const Visualizer: React.FC = () => {
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
   const [pressedNodeStatus, setPressedNodeStatus] = useState("");
   const [selectedNode, setSelectedNode] = useState<NodeType>({} as NodeType);
-  const [open, setOpen] = useState(true);
+  const [modal, setModal] = useState(true);
   const [isMazeDropdownOpen, setIsMazeDropdownOpen] = useState(false);
   const [isAlgoDropdownOpen, setIsAlgoDropdownOpen] = useState(false);
 
@@ -384,7 +384,7 @@ const Visualizer: React.FC = () => {
           );
         })}
       </div>
-      <TutorialModal open={open} onClose={() => setOpen(false)} />
+      <TutorialModal openModal={modal} closeModal={() => setModal(false)} />
     </div>
   );
 };
