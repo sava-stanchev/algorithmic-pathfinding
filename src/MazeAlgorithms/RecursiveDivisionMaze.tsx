@@ -1,5 +1,16 @@
 import { NodeType } from "../Visualizer/SingleNode/SingleNode";
 
+const relevantClassNames = ["node node-start", "node node-finish"];
+
+const isBorderCell = (row: number, col: number) =>
+  row === 0 || col === 0 || row === 20 || col === 39;
+
+const isValidWallPlacement = (node: HTMLElement) =>
+  !relevantClassNames.includes(node.className);
+
+const getNode = (col: number, row: number) =>
+  document.getElementById(`node-${col}-${row}`)!;
+
 export const createRecursiveDivisionMaze = (
   grid: NodeType[][],
   rowStart: number,
@@ -11,27 +22,15 @@ export const createRecursiveDivisionMaze = (
   wallsToAnimate: HTMLElement[],
   skew: string
 ): [NodeType[][], HTMLElement[]] => {
-  if (rowEnd < rowStart || colEnd < colStart) {
-    return [grid, wallsToAnimate];
-  }
+  if (rowEnd < rowStart || colEnd < colStart) return [grid, wallsToAnimate];
 
   if (!surroundingWalls) {
-    for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid[i].length; j++) {
-        let currNode = document.getElementById(
-          `node-${grid[i][j].col}-${grid[i][j].row}`
-        )!;
-        let relevantClassNames = ["node node-start", "node node-finish"];
-        if (!relevantClassNames.includes(currNode.className)) {
-          if (
-            grid[i][j].row === 0 ||
-            grid[i][j].col === 0 ||
-            grid[i][j].row === 20 ||
-            grid[i][j].col === 39
-          ) {
-            wallsToAnimate.push(currNode);
-            grid[i][j].isWall = true;
-          }
+    for (let row of grid) {
+      for (let node of row) {
+        const element = getNode(node.col, node.row);
+        if (isBorderCell(node.row, node.col) && isValidWallPlacement(element)) {
+          wallsToAnimate.push(element);
+          node.isWall = true;
         }
       }
     }
@@ -39,174 +38,141 @@ export const createRecursiveDivisionMaze = (
   }
 
   if (orientation === "horizontal") {
-    let possibleRows = [];
-    for (let number = rowStart; number <= rowEnd; number += 2) {
-      possibleRows.push(number);
-    }
-    let possibleCols = [];
-    for (let number = colStart - 1; number <= colEnd + 1; number += 2) {
-      possibleCols.push(number);
-    }
-    let randomRowIndex = Math.floor(Math.random() * possibleRows.length);
-    let randomColIndex = Math.floor(Math.random() * possibleCols.length);
-    let currentRow = possibleRows[randomRowIndex];
-    let colRandom = possibleCols[randomColIndex];
-    for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid[i].length; j++) {
-        let currNode = document.getElementById(
-          `node-${grid[i][j].col}-${grid[i][j].row}`
-        )!;
+    const possibleRows = Array.from(
+      { length: Math.floor((rowEnd - rowStart) / 2) + 1 },
+      (_, i) => rowStart + i * 2
+    );
+    const possibleCols = Array.from(
+      { length: Math.floor((colEnd - colStart + 2) / 2) + 1 },
+      (_, i) => colStart - 1 + i * 2
+    );
 
+    const currentRow =
+      possibleRows[Math.floor(Math.random() * possibleRows.length)];
+    const colRandom =
+      possibleCols[Math.floor(Math.random() * possibleCols.length)];
+
+    for (let row of grid) {
+      for (let node of row) {
         if (
-          grid[i][j].row === currentRow &&
-          grid[i][j].col !== colRandom &&
-          grid[i][j].col >= colStart - 1 &&
-          grid[i][j].col <= colEnd + 1
+          node.row === currentRow &&
+          node.col !== colRandom &&
+          node.col >= colStart - 1 &&
+          node.col <= colEnd + 1
         ) {
-          let relevantClassNames = ["node node-start", "node node-finish"];
-          if (!relevantClassNames.includes(currNode.className)) {
-            wallsToAnimate.push(currNode);
-            grid[i][j].isWall = true;
+          const element = getNode(node.col, node.row);
+          if (isValidWallPlacement(element)) {
+            wallsToAnimate.push(element);
+            node.isWall = true;
           }
         }
       }
     }
-    if (currentRow - 2 - rowStart > colEnd - colStart) {
-      createRecursiveDivisionMaze(
-        grid,
-        rowStart,
-        currentRow - 2,
-        colStart,
-        colEnd,
-        orientation,
-        surroundingWalls,
-        wallsToAnimate,
-        skew
-      );
-    } else {
-      createRecursiveDivisionMaze(
-        grid,
-        rowStart,
-        currentRow - 2,
-        colStart,
-        colEnd,
-        skew === "horizontalSkew" ? "horizontal" : "vertical",
-        surroundingWalls,
-        wallsToAnimate,
-        skew
-      );
-    }
 
-    if (rowEnd - (currentRow + 2) > colEnd - colStart) {
-      createRecursiveDivisionMaze(
-        grid,
-        currentRow + 2,
-        rowEnd,
-        colStart,
-        colEnd,
-        skew === "verticalSkew" ? "vertical" : orientation,
-        surroundingWalls,
-        wallsToAnimate,
-        skew
-      );
-    } else {
-      createRecursiveDivisionMaze(
-        grid,
-        currentRow + 2,
-        rowEnd,
-        colStart,
-        colEnd,
-        "vertical",
-        surroundingWalls,
-        wallsToAnimate,
-        skew
-      );
-    }
+    const topOrientation =
+      currentRow - 2 - rowStart > colEnd - colStart
+        ? orientation
+        : skew === "horizontalSkew"
+        ? "horizontal"
+        : "vertical";
+
+    const bottomOrientation =
+      rowEnd - (currentRow + 2) > colEnd - colStart
+        ? skew === "verticalSkew"
+          ? "vertical"
+          : orientation
+        : "vertical";
+
+    createRecursiveDivisionMaze(
+      grid,
+      rowStart,
+      currentRow - 2,
+      colStart,
+      colEnd,
+      topOrientation,
+      surroundingWalls,
+      wallsToAnimate,
+      skew
+    );
+    createRecursiveDivisionMaze(
+      grid,
+      currentRow + 2,
+      rowEnd,
+      colStart,
+      colEnd,
+      bottomOrientation,
+      surroundingWalls,
+      wallsToAnimate,
+      skew
+    );
   } else {
-    let possibleCols = [];
-    for (let number = colStart; number <= colEnd; number += 2) {
-      possibleCols.push(number);
-    }
-    let possibleRows = [];
-    for (let number = rowStart - 1; number <= rowEnd + 1; number += 2) {
-      possibleRows.push(number);
-    }
-    let randomColIndex = Math.floor(Math.random() * possibleCols.length);
-    let randomRowIndex = Math.floor(Math.random() * possibleRows.length);
-    let currentCol = possibleCols[randomColIndex];
-    let rowRandom = possibleRows[randomRowIndex];
-    for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid[i].length; j++) {
-        let currNode = document.getElementById(
-          `node-${grid[i][j].col}-${grid[i][j].row}`
-        )!;
+    const possibleCols = Array.from(
+      { length: Math.floor((colEnd - colStart) / 2) + 1 },
+      (_, i) => colStart + i * 2
+    );
+    const possibleRows = Array.from(
+      { length: Math.floor((rowEnd - rowStart + 2) / 2) + 1 },
+      (_, i) => rowStart - 1 + i * 2
+    );
 
+    const currentCol =
+      possibleCols[Math.floor(Math.random() * possibleCols.length)];
+    const rowRandom =
+      possibleRows[Math.floor(Math.random() * possibleRows.length)];
+
+    for (let row of grid) {
+      for (let node of row) {
         if (
-          grid[i][j].col === currentCol &&
-          grid[i][j].row !== rowRandom &&
-          grid[i][j].row >= rowStart - 1 &&
-          grid[i][j].row <= rowEnd + 1
+          node.col === currentCol &&
+          node.row !== rowRandom &&
+          node.row >= rowStart - 1 &&
+          node.row <= rowEnd + 1
         ) {
-          let relevantClassNames = ["node node-start", "node node-finish"];
-          if (!relevantClassNames.includes(currNode.className)) {
-            wallsToAnimate.push(currNode);
-            grid[i][j].isWall = true;
+          const element = getNode(node.col, node.row);
+          if (isValidWallPlacement(element)) {
+            wallsToAnimate.push(element);
+            node.isWall = true;
           }
         }
       }
     }
 
-    if (rowEnd - rowStart > currentCol - 2 - colStart) {
-      createRecursiveDivisionMaze(
-        grid,
-        rowStart,
-        rowEnd,
-        colStart,
-        currentCol - 2,
-        skew === "verticalSkew" ? "vertical" : "horizontal",
-        surroundingWalls,
-        wallsToAnimate,
-        skew
-      );
-    } else {
-      createRecursiveDivisionMaze(
-        grid,
-        rowStart,
-        rowEnd,
-        colStart,
-        currentCol - 2,
-        skew === "horizontalSkew" ? "horizontal" : orientation,
-        surroundingWalls,
-        wallsToAnimate,
-        skew
-      );
-    }
+    const leftOrientation =
+      rowEnd - rowStart > currentCol - 2 - colStart
+        ? skew === "verticalSkew"
+          ? "vertical"
+          : "horizontal"
+        : skew === "horizontalSkew"
+        ? "horizontal"
+        : orientation;
 
-    if (rowEnd - rowStart > colEnd - (currentCol + 2)) {
-      createRecursiveDivisionMaze(
-        grid,
-        rowStart,
-        rowEnd,
-        currentCol + 2,
-        colEnd,
-        "horizontal",
-        surroundingWalls,
-        wallsToAnimate,
-        skew
-      );
-    } else {
-      createRecursiveDivisionMaze(
-        grid,
-        rowStart,
-        rowEnd,
-        currentCol + 2,
-        colEnd,
-        orientation,
-        surroundingWalls,
-        wallsToAnimate,
-        skew
-      );
-    }
+    const rightOrientation =
+      rowEnd - rowStart > colEnd - (currentCol + 2)
+        ? "horizontal"
+        : orientation;
+
+    createRecursiveDivisionMaze(
+      grid,
+      rowStart,
+      rowEnd,
+      colStart,
+      currentCol - 2,
+      leftOrientation,
+      surroundingWalls,
+      wallsToAnimate,
+      skew
+    );
+    createRecursiveDivisionMaze(
+      grid,
+      rowStart,
+      rowEnd,
+      currentCol + 2,
+      colEnd,
+      rightOrientation,
+      surroundingWalls,
+      wallsToAnimate,
+      skew
+    );
   }
 
   return [grid, wallsToAnimate];
