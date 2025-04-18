@@ -1,15 +1,8 @@
+import { getNode, isStartOrTarget } from "../HelperFuncs/MazeHelpers";
 import { NodeType } from "../Visualizer/SingleNode/SingleNode";
-
-const relevantClassNames = ["node node-start", "node node-finish"];
 
 const isBorderCell = (row: number, col: number) =>
   row === 0 || col === 0 || row === 20 || col === 39;
-
-const isValidWallPlacement = (node: HTMLElement) =>
-  !relevantClassNames.includes(node.className);
-
-const getNode = (col: number, row: number) =>
-  document.getElementById(`node-${col}-${row}`)!;
 
 export const createRecursiveDivisionMaze = (
   grid: NodeType[][],
@@ -28,7 +21,10 @@ export const createRecursiveDivisionMaze = (
     for (let row of grid) {
       for (let node of row) {
         const element = getNode(node.col, node.row);
-        if (isBorderCell(node.row, node.col) && isValidWallPlacement(element)) {
+        if (
+          isBorderCell(node.row, node.col) &&
+          !isStartOrTarget(element.className)
+        ) {
           wallsToAnimate.push(element);
           node.isWall = true;
         }
@@ -61,7 +57,7 @@ export const createRecursiveDivisionMaze = (
           node.col <= colEnd + 1
         ) {
           const element = getNode(node.col, node.row);
-          if (isValidWallPlacement(element)) {
+          if (!isStartOrTarget(element.className)) {
             wallsToAnimate.push(element);
             node.isWall = true;
           }
@@ -129,7 +125,7 @@ export const createRecursiveDivisionMaze = (
           node.row <= rowEnd + 1
         ) {
           const element = getNode(node.col, node.row);
-          if (isValidWallPlacement(element)) {
+          if (!isStartOrTarget(element.className)) {
             wallsToAnimate.push(element);
             node.isWall = true;
           }
