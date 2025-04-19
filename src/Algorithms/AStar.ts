@@ -1,22 +1,12 @@
 import { getUnvisitedNeighbors } from "../HelperFuncs/AlgorithmHelpers";
 import { NodeType } from "../Visualizer/SingleNode/SingleNode";
 
-const manhattanDistance = (node: NodeType, finishNode: NodeType) => {
-  let x = Math.abs(node.col - finishNode.col);
-  let y = Math.abs(node.row - finishNode.row);
-  return x + y;
+const manhattanDistance = (node: NodeType, target: NodeType) => {
+  return Math.abs(node.col - target.col) + Math.abs(node.row - target.row);
 };
 
-const neighborNotInUnvisitedNodes = (
-  neighbor: NodeType,
-  unvisitedNodes: NodeType[]
-) => {
-  for (let node of unvisitedNodes) {
-    if (node.row === neighbor.row && node.col === neighbor.col) {
-      return false;
-    }
-  }
-  return true;
+const isNotInUnvisited = (node: NodeType, unvisited: NodeType[]) => {
+  return !unvisited.some((n) => n.row === node.row && n.col === node.col);
 };
 
 export const AStar = (
@@ -24,41 +14,40 @@ export const AStar = (
   startNode: NodeType,
   finishNode: NodeType
 ) => {
-  if (!startNode || !finishNode || startNode === finishNode) {
-    return false;
-  }
+  if (!startNode || !finishNode || startNode === finishNode) return false;
 
-  const unvisitedNodes = [];
-  const visitedNodesInOrder = [];
+  const unvisitedNodes: NodeType[] = [startNode];
+  const visitedNodesInOrder: NodeType[] = [];
+
   startNode.distance = 0;
-  unvisitedNodes.push(startNode);
 
-  while (unvisitedNodes.length !== 0) {
-    unvisitedNodes.sort(
-      (nodeA, nodeB) => nodeA.totalDistance - nodeB.totalDistance
-    );
+  while (unvisitedNodes.length > 0) {
+    unvisitedNodes.sort((a, b) => a.totalDistance - b.totalDistance);
     const closestNode = unvisitedNodes.shift();
+
+    if (!closestNode) continue;
     if (closestNode === finishNode) return visitedNodesInOrder;
-    if (closestNode) {
-      closestNode.isVisited = true;
-      visitedNodesInOrder.push(closestNode);
-      const neighbors = getUnvisitedNeighbors(closestNode, grid);
 
-      for (let neighbor of neighbors) {
-        let distance = closestNode.distance + 1;
+    closestNode.isVisited = true;
+    visitedNodesInOrder.push(closestNode);
 
-        if (neighborNotInUnvisitedNodes(neighbor, unvisitedNodes)) {
-          unvisitedNodes.unshift(neighbor);
-          neighbor.distance = distance;
-          neighbor.totalDistance =
-            distance + manhattanDistance(neighbor, finishNode);
-          neighbor.previousNode = closestNode;
-        } else if (distance < neighbor.distance) {
-          neighbor.distance = distance;
-          neighbor.totalDistance =
-            distance + manhattanDistance(neighbor, finishNode);
-          neighbor.previousNode = closestNode;
-        }
+    const neighbors = getUnvisitedNeighbors(closestNode, grid);
+
+    for (const neighbor of neighbors) {
+      const tentativeDistance = closestNode.distance + 1;
+
+      if (isNotInUnvisited(neighbor, unvisitedNodes)) {
+        unvisitedNodes.unshift(neighbor);
+      }
+
+      if (
+        tentativeDistance < neighbor.distance ||
+        isNotInUnvisited(neighbor, unvisitedNodes)
+      ) {
+        neighbor.distance = tentativeDistance;
+        neighbor.totalDistance =
+          tentativeDistance + manhattanDistance(neighbor, finishNode);
+        neighbor.previousNode = closestNode;
       }
     }
   }
