@@ -12,8 +12,10 @@ export const depthFirstSearch = (
     const visitedNodesInOrder: NodeType[] = [];
 
     while (stack.length > 0) {
-        const currentNode = stack.shift();
-        if (!currentNode || currentNode.isWall) continue;
+        const currentNode = stack.pop();
+        if (!currentNode || currentNode.isWall || currentNode.isVisited) {
+            continue;
+        }
 
         if (currentNode === finishNode) return visitedNodesInOrder;
 
@@ -22,8 +24,10 @@ export const depthFirstSearch = (
 
         const unvisitedNeighbors = getUnvisitedNeighbors(currentNode, grid);
         for (const neighbor of unvisitedNeighbors) {
-            neighbor.previousNode = currentNode;
-            stack.unshift(neighbor);
+            if (!neighbor.isVisited) {
+                neighbor.previousNode = currentNode;
+                stack.push(neighbor);
+            }
         }
     }
 };
