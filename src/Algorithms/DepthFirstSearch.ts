@@ -2,28 +2,28 @@ import { getUnvisitedNeighbors } from "../HelperFuncs/AlgorithmHelpers";
 import { NodeType } from "../Visualizer/SingleNode/SingleNode";
 
 export const depthFirstSearch = (
-  grid: NodeType[][],
-  startNode: NodeType,
-  finishNode: NodeType
+    grid: NodeType[][],
+    startNode: NodeType,
+    finishNode: NodeType
 ) => {
-  if (!startNode || !finishNode || startNode === finishNode) {
-    return false;
-  }
+    if (!startNode || !finishNode || startNode === finishNode) return false;
 
-  const unvisitedNodes = [];
-  const visitedNodesInOrder = [];
-  unvisitedNodes.push(startNode);
-  while (unvisitedNodes.length !== 0) {
-    const closestNode = unvisitedNodes.shift();
-    if (!closestNode) return;
-    if (closestNode.isWall) continue;
-    if (closestNode === finishNode) return visitedNodesInOrder;
-    visitedNodesInOrder.push(closestNode);
-    closestNode.isVisited = true;
-    const unvisitedNeighbors = getUnvisitedNeighbors(closestNode, grid);
-    for (let unvisitedNeighbor of unvisitedNeighbors) {
-      unvisitedNeighbor.previousNode = closestNode;
-      unvisitedNodes.unshift(unvisitedNeighbor);
+    const stack: NodeType[] = [startNode];
+    const visitedNodesInOrder: NodeType[] = [];
+
+    while (stack.length > 0) {
+        const currentNode = stack.shift();
+        if (!currentNode || currentNode.isWall) continue;
+
+        if (currentNode === finishNode) return visitedNodesInOrder;
+
+        currentNode.isVisited = true;
+        visitedNodesInOrder.push(currentNode);
+
+        const unvisitedNeighbors = getUnvisitedNeighbors(currentNode, grid);
+        for (const neighbor of unvisitedNeighbors) {
+            neighbor.previousNode = currentNode;
+            stack.unshift(neighbor);
+        }
     }
-  }
 };
